@@ -11,6 +11,8 @@ using Google.Android.Material.Button;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
 using System.Net.Http;
+using Newtonsoft.Json.Linq;
+using System.Text;
 
 namespace StageEteMob
 {
@@ -56,25 +58,38 @@ namespace StageEteMob
             AppCompatEditText telET = FindViewById<AppCompatEditText>(Resource.Id.telTF);
             AppCompatEditText paysET = FindViewById<AppCompatEditText>(Resource.Id.paysTF);
 
-            //SERVICE.Lib.Client client = new SERVICE.Lib.Client();
-            //client.Nom = nomET.Text;
-            //client.Tel = telET.Text;
-            //client.Pays = paysET.Text;
-            //String json = JsonConvert.SerializeObject(client);
 
             Console.WriteLine("*******************   " + nomET.Text);
-            meth();
+            var data =new
+            {
+                Tel = telET.Text,
+                Nom = nomET.Text,
+                Pays = paysET.Text
+            };
+            var json = JsonConvert.SerializeObject(data);
+            meth(json);
         }
-        async void meth()
+        async void meth(string val)
         {
-            await CallAPI();
+            //await CallAPI();
+            
+            await SetAPI(val);
         }
 
         private async Task CallAPI()
         {
             try
             {
-                string uri = "https://10.0.2.2:44317/api/Values";
+                string uri = "";
+
+                //only for testing with current emulator 
+                if (Build.Hardware.Contains("ranchu"))
+                {
+                    uri = "https://10.0.2.2:44317/api/Values";
+                    Console.WriteLine("********* ranchu *******");
+                }
+                else
+                    uri = "https://192.168.1.2:45456/api/Values";
 
                 //bypassing SSLHandshakeException
                 HttpClientHandler clientHandler = new HttpClientHandler
@@ -89,15 +104,15 @@ namespace StageEteMob
                 if (httpResponse.IsSuccessStatusCode)
                 {
                     string result = await httpResponse.Content.ReadAsStringAsync();
-                    Console.WriteLine("************** Result: 00000  " + result);
                     var JsonString = JsonConvert.DeserializeObject<string>(result);
+                    string prettyJson = JToken.Parse(JsonString).ToString(Formatting.Indented);
 
-                    Console.WriteLine("************** Result: " + JsonString);
+                    Console.WriteLine("************** Result: " + prettyJson);
 
                 }
                 else
                 {
-                    Console.WriteLine("************** failed "+ httpResponse.StatusCode + " "+httpResponse.ReasonPhrase);
+                    Console.WriteLine("************** failed " + httpResponse.StatusCode + " " + httpResponse.ReasonPhrase);
                 }
             }
             catch (Exception ex)
@@ -106,7 +121,34 @@ namespace StageEteMob
                 Console.WriteLine("************** Stack Trace: " + ex.StackTrace);
             }
         }
+        private async Task SetAPI(string valueToSend)
+        {
+            string uri = "";
+            //    //only for testing with current emulator 
+            if (Build.Hardware.Contains("ranchu"))
+                uri = "https://10.0.2.2:44317/api/Values";
+            else
+                uri = "https://192.168.1.2:45456/api/Values";
 
+
+            //bypassing SSLHandshakeException
+            HttpClientHandler clientHandler = new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; }
+            };
+
+            var client = new HttpClient(clientHandler);
+            var httpContent = new StringContent("");
+            var result = await client.PostAsync(uri + "?fromMob="+valueToSend, httpContent);
+
+
+            if (result.IsSuccessStatusCode)
+            {
+                var tokenJson = await result.Content.ReadAsStringAsync();
+            }
+            else
+                Console.WriteLine("************** FAILED: " + result.ReasonPhrase);
+        }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
