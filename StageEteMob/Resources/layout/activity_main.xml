@@ -10,7 +10,6 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:theme="@style/AppTheme.AppBarOverlay">
-
 		<androidx.appcompat.widget.Toolbar
 			android:id="@+id/toolbar"
 			android:layout_width="match_parent"
@@ -18,9 +17,44 @@
 			android:background="?attr/colorPrimary"
 			app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-	</com.google.android.material.appbar.AppBarLayout>
 
-	<include
-		layout="@layout/content_main" />
+	</com.google.android.material.appbar.AppBarLayout>
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:id="@+id/relativeLay">
+
+
+		<RelativeLayout
+			android:id="@+id/containerView"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent">
+
+		</RelativeLayout>
+
+
+
+		<com.google.android.material.tabs.TabLayout
+			android:layout_width="match_parent"
+			android:layout_height="56.0dp"
+			android:layout_marginEnd="0dp"
+			android:layout_marginStart="0dp"
+			android:layout_alignParentBottom="true"
+			android:id="@+id/tabLayout1">
+			<com.google.android.material.tabs.TabItem
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:text="set"
+				android:id="@+id/tabItem1" />
+			<com.google.android.material.tabs.TabItem
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:text="get"
+				android:id="@+id/tabItem2" />
+		</com.google.android.material.tabs.TabLayout>
+	</RelativeLayout>
+
+	<!--<include
+		layout="@layout/content_main" />-->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

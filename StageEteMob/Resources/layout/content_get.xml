@@ -7,7 +7,6 @@
 	android:layout_height="match_parent"
 	app:layout_behavior="@string/appbar_scrolling_view_behavior"
 	tools:showIn="@layout/activity_main"
-	android:id="@+id/relativeLayInc"
 	android:minWidth="25px"
 	android:minHeight="25px">
 	<LinearLayout
@@ -28,16 +27,7 @@
 			android:layout_height="wrap_content"
 			android:id="@+id/nomTF"
 			android:hint="Nom" />
-		<EditText
-			android:layout_width="match_parent"
-			android:layout_height="54.5dp"
-			android:id="@+id/telTF"
-			android:hint="Tel" />
-		<EditText
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:id="@+id/paysTF"
-			android:hint="Pays" />
+		
 		<Button
 			android:text="Button"
 			android:layout_width="match_parent"
