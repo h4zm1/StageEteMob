@@ -52,60 +52,17 @@ namespace StageEteMob
                 Pays = paysET.Text
             };
             var json = JsonConvert.SerializeObject(data);
-            selector(json);
+            midSync(json);
         }
 
-        private async void selector(string val)
+        private async void midSync(string val)
         {
             //await CallAPI();
 
             await SetAPI(val);
         }
 
-        private async Task CallAPI()
-        {
-            try
-            {
-                string uri = "";
-
-                //only for testing with current emulator
-                if (Build.Hardware.Contains("ranchu"))
-                {
-                    uri = "https://10.0.2.2:44317/api/Values";
-                    Console.WriteLine("********* ranchu *******");
-                }
-                else
-                    uri = "https://192.168.1.2:45456/api/Values";
-
-                //bypassing SSLHandshakeException
-                HttpClientHandler clientHandler = new HttpClientHandler
-                {
-                    ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; }
-                };
-
-                HttpClient httpClient = new HttpClient(clientHandler);
-
-                HttpResponseMessage httpResponse = await httpClient.GetAsync(uri);
-
-                if (httpResponse.IsSuccessStatusCode)
-                {
-                    string result = await httpResponse.Content.ReadAsStringAsync();
-                    var JsonString = JsonConvert.DeserializeObject<string>(result);
-                    string prettyJson = JToken.Parse(JsonString).ToString(Formatting.Indented);
-
-                    Console.WriteLine("************** Result: " + prettyJson);
-                }
-                else
-                {
-                    Console.WriteLine("************** failed " + httpResponse.StatusCode + " " + httpResponse.ReasonPhrase);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("************** Error Message: " + ex.Message);
-                Console.WriteLine("************** Stack Trace: " + ex.StackTrace);
-            }
-        }
+       
 
         private async Task SetAPI(string valueToSend)
         {
