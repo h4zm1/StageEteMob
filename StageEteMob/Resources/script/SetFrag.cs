@@ -16,6 +16,7 @@ using Newtonsoft.Json;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
+using Google.Android.Material.Tabs;
 
 namespace StageEteMob
 {
@@ -31,7 +32,7 @@ namespace StageEteMob
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
 
-            var fragmentView = inflater.Inflate(Resource.Layout.content_main, container, false);
+            var fragmentView = inflater.Inflate(Resource.Layout.content_set, container, false);
 
             MaterialButton btn = fragmentView.FindViewById<MaterialButton>(Resource.Id.button1);
             btn.Click += initEvent;
@@ -44,7 +45,6 @@ namespace StageEteMob
             AppCompatEditText telET = View.FindViewById<AppCompatEditText>(Resource.Id.telTF);
             AppCompatEditText paysET = View.FindViewById<AppCompatEditText>(Resource.Id.paysTF);
 
-            Console.WriteLine("*******************   " + nomET.Text);
             var data = new
             {
                 Tel = telET.Text,
@@ -52,26 +52,26 @@ namespace StageEteMob
                 Pays = paysET.Text
             };
             var json = JsonConvert.SerializeObject(data);
+            Console.WriteLine("### serialized object output:: " + json);
+
             midSync(json);
         }
 
         private async void midSync(string val)
         {
-            //await CallAPI();
-
             await SetAPI(val);
         }
 
-       
+
 
         private async Task SetAPI(string valueToSend)
         {
             string uri = "";
             //only for testing with current emulator
             if (Build.Hardware.Contains("ranchu"))
-                uri = "https://10.0.2.2:44317/api/Values";
+                uri = "https://10.0.2.2:44317/api/Client";
             else
-                uri = "https://192.168.1.2:45456/api/Values";
+                uri = "https://192.168.1.2:45456/api/Client";
 
             //bypassing SSLHandshakeException
             HttpClientHandler clientHandler = new HttpClientHandler
@@ -81,8 +81,11 @@ namespace StageEteMob
 
             var client = new HttpClient(clientHandler);
             var httpContent = new StringContent("");
-            var result = await client.PostAsync(uri + "?fromMob=" + valueToSend, httpContent);
 
+            var result = await client.PostAsync(uri + "?fromMob=" + valueToSend, httpContent);
+            //this how to retrieve the returned string from the POST call
+            var fromPost = await result.Content.ReadAsStringAsync();
+            Console.WriteLine(fromPost);
             if (result.IsSuccessStatusCode)
             {
                 var tokenJson = await result.Content.ReadAsStringAsync();

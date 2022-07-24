@@ -13,4 +13,10 @@
         android:title="@string/title_get"/>
 		<!--android:icon="@drawable/ic_dashboard_black_24dp"-->
 
+
+	<item
+        android:id="@+id/user"
+        
+        android:title="@string/title_me"/>
+
 </menu>

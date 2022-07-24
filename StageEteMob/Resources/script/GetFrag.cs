@@ -80,12 +80,12 @@ namespace StageEteMob
                 //only for testing with current emulator
                 if (Build.Hardware.Contains("ranchu"))
                 {
-                    uri = "https://10.0.2.2:44317/api/Values";
+                    uri = "https://10.0.2.2:44317/api/Client";
                     Console.WriteLine("********* ranchu emu *******");
                 }
                 else
                     //ip = pc(host) ip address, port = extension remote url port 
-                    uri = "https://192.168.9.97:45461/api/Values";
+                    uri = "https://192.168.9.97:45461/api/Client";
 
                 //bypassing SSLHandshakeException
                 HttpClientHandler clientHandler = new HttpClientHandler
@@ -103,22 +103,30 @@ namespace StageEteMob
                 {
                     string result = await httpResponse.Content.ReadAsStringAsync();
                     var JsonString = JsonConvert.DeserializeObject<string>(result);
+
+
                     string prettyJson = JToken.Parse(JsonString).ToString(Formatting.Indented);
                     //editText.Text = prettyJson;
 
+                    //convert the json we getting from server to list of client (struct)
                     client[] deptList = JsonConvert.DeserializeObject<client[]>(prettyJson);
+
                     IList<String> listOfName = new List<string>();
+
+                    //filling a list with clients names
                     int c = 1;
                     foreach (var v in deptList)
                     {
                         listOfName.Add(c+ " : "+v.Nom.ToString());
+                        Console.WriteLine(c+ " names:: " + v.Nom.ToString());
                         c++;
                     }
 
+                    //displaying the number of clients
                     nbrClient_TV.Text = deptList.Count().ToString();
 
 
-                    //
+                    //linking the list of clients names to the list view
                     listV.Adapter = new ArrayAdapter<String>(this.Context, Android.Resource.Layout.SimpleListItem1, listOfName);
 
 

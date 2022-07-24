@@ -36,8 +36,8 @@ namespace StageEteMob
             AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
 
-            //set setfrag as main frag
-            SupportFragmentManager.BeginTransaction().Add(Resource.Id.containerView, new SetFrag()).Commit();
+            //set signinfrag as starting frag
+            SupportFragmentManager.BeginTransaction().Add(Resource.Id.containerView, new SignInFrag()).Commit();
 
             TabLayout tab = FindViewById<TabLayout>(Resource.Id.tabLayout1);
             tab.TabSelected += TabLayoutOnTabSelected;
@@ -58,10 +58,15 @@ namespace StageEteMob
                 Console.WriteLine("*******************   set ");
                 SupportFragmentManager.BeginTransaction().Replace(Resource.Id.containerView, new SetFrag()).Commit();
             }
-            else
+            else if(selected == "get")
             {
                 Console.WriteLine("*******************   get ");
                 SupportFragmentManager.BeginTransaction().Replace(Resource.Id.containerView, new GetFrag()).Commit();
+            }
+            else
+            {
+                Console.WriteLine("*******************   me ");
+                SupportFragmentManager.BeginTransaction().Replace(Resource.Id.containerView, new MeFrag()).Commit();
             }
         }
         public override bool OnOptionsItemSelected(IMenuItem item)
