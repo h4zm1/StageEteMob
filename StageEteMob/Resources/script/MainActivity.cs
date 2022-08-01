@@ -33,8 +33,6 @@ namespace StageEteMob
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
 
-            AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
-            SetSupportActionBar(toolbar);
 
             //set signinfrag as starting frag
             SupportFragmentManager.BeginTransaction().Add(Resource.Id.containerView, new SignInFrag()).Commit();
@@ -63,10 +61,15 @@ namespace StageEteMob
                 Console.WriteLine("*******************   get ");
                 SupportFragmentManager.BeginTransaction().Replace(Resource.Id.containerView, new GetFrag()).Commit();
             }
-            else
+            else if (selected == "me")
             {
                 Console.WriteLine("*******************   me ");
                 SupportFragmentManager.BeginTransaction().Replace(Resource.Id.containerView, new MeFrag()).Commit();
+            }
+            else
+            {
+                SupportFragmentManager.BeginTransaction().Replace(Resource.Id.containerView, new DevisFrag()).Commit();
+
             }
         }
         public override bool OnOptionsItemSelected(IMenuItem item)

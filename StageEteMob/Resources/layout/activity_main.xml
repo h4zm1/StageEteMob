@@ -55,6 +55,11 @@
 			<com.google.android.material.tabs.TabItem
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
+				android:text="devis"
+				android:id="@+id/devisTab" />
+			<com.google.android.material.tabs.TabItem
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
 				android:text="me"
 				android:id="@+id/meTab" />
 		</com.google.android.material.tabs.TabLayout>

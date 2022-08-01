@@ -68,10 +68,13 @@
     <Compile Include="Resources\script\MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\script\DevisFrag.cs" />
     <Compile Include="Resources\script\SetFrag.cs" />
     <Compile Include="Resources\script\MeFrag.cs" />
     <Compile Include="Resources\script\SignInFrag.cs" />
     <Compile Include="Resources\script\GlobVars.cs" />
+    <Compile Include="Resources\script\adapter\ArtAdapter.cs" />
+    <Compile Include="Resources\script\model\Article.cs" />
     <Compile Include="Resources\script\TempAuth.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -144,6 +147,18 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\content_me.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\content_devis.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\listItem.xml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>

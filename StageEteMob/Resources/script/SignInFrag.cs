@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using StageEteMob.Resources.script;
 using Google.Android.Material.Tabs;
+using System.Timers;
 
 namespace StageEteMob
 {
@@ -29,6 +30,8 @@ namespace StageEteMob
             public string password;
             public string code;
         };
+        TextView feedbackOut;
+        Timer timer = new Timer(5000);
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -47,6 +50,9 @@ namespace StageEteMob
             MaterialButton btn = fragmentView.FindViewById<MaterialButton>(Resource.Id.signinBtn);
             btn.Click += initEvent;
 
+            feedbackOut = fragmentView.FindViewById<TextView>(Resource.Id.feedbackTV);
+
+
             return fragmentView;
         }
         private void initEvent(object sender, EventArgs eventArgs)
@@ -57,6 +63,7 @@ namespace StageEteMob
             //temp auth assignment, just so I don't have to write it evertime
             login.Text = TempAuth.logpwd;
             password.Text = TempAuth.logpwd;
+
 
 
             var auth = new
@@ -106,6 +113,11 @@ namespace StageEteMob
             if (fromPost == "\"none\"")
             {
                 Console.WriteLine("************** FAILED ");
+                feedbackOut.Text = "User not found";
+                
+                timer.Elapsed += OnTimeOut;
+                timer.AutoReset = true;
+                timer.Enabled= true;
                 return;
             }
 
@@ -133,6 +145,11 @@ namespace StageEteMob
             }
             else
                 Console.WriteLine("************** FAILED: " + result.ReasonPhrase);
+        }
+
+        void OnTimeOut(Object source, ElapsedEventArgs e)
+        {
+            feedbackOut.Text = "";
         }
     }
 }

@@ -15,29 +15,25 @@
 		android:minHeight="25px"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
+		android:paddingLeft="20px"
+		android:paddingRight="20px"
 		android:id="@+id/linearLayout1">
-		<androidx.appcompat.widget.Toolbar
-			android:id="@+id/toolbar"
-			android:layout_width="match_parent"
-			android:layout_height="?attr/actionBarSize"
-			android:background="?attr/colorPrimary"
-			app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-
-		<Button
-			android:text="Button"
+		<TextView
+			android:text="Client list"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:id="@+id/button1"/>
+			android:id="@+id/label"
+			android:textSize="27sp"
+			android:textStyle="normal"
+			android:paddingTop="30px"
+			android:paddingBottom="30px"
+			android:textColor="#ff282828" />
 		<TextView
-			android:text="Text"
+			android:text="Loading..."
 			android:layout_width="match_parent"
 			android:layout_height="22.5dp"
 			android:id="@+id/textView1"
-			android:layout_marginBottom="15.0dp" />
-
-
-
+			android:layout_marginBottom="7dp"/>
 
 		<ListView
 			android:minWidth="25px"
