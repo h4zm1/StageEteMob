@@ -24,6 +24,8 @@ namespace StageEteMob
 {
     public class DevisFrag : AndroidX.Fragment.App.Fragment
     {
+        TextView devisTV;
+        TextView articleTv;
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -35,89 +37,32 @@ namespace StageEteMob
 
             var fragmentView = inflater.Inflate(Resource.Layout.content_devis, container, false);
 
-            TextView jsonDisplay = fragmentView.FindViewById<TextView>(Resource.Id.tvJson);
+            devisTV = fragmentView.FindViewById<TextView>(Resource.Id.devisText);
+            articleTv = fragmentView.FindViewById<TextView>(Resource.Id.articleText);
+            devisTV.Click += devisEvent;
+            articleTv.Click += articleEvent;
 
-            MaterialButton btn = fragmentView.FindViewById<MaterialButton>(Resource.Id.signoutBtn);
-            btn.Click += initEvent;
+            //set _DevisFrag as starting frag
+            Activity.SupportFragmentManager.BeginTransaction().Add(Resource.Id.devisContainerView, new _DevisFrag()).Commit();
 
-            midSync(fragmentView);
 
+            //jsonDisplay.Click += initEvent;
             return fragmentView;
         }
-
-        public void recyclerViewSetup(View fragmentView, List<Article> listOfArticle)
+        void devisEvent(object sender, EventArgs eventArgs)
         {
-            List<Article> listArticle = listOfArticle;
-            RecyclerView rv = fragmentView.FindViewById<RecyclerView>(Resource.Id.recyclerView1);
-            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this.Context);
-            rv.SetLayoutManager(mLayoutManager);
 
-            ArtAdapter adapter = new ArtAdapter(listArticle);
-            rv.SetAdapter(adapter);
+            devisTV.SetTextColor(Android.Graphics.Color.Rgb(22, 22, 22));
+            articleTv.SetTextColor(Android.Graphics.Color.Rgb(173, 173, 173));
+            Activity.SupportFragmentManager.BeginTransaction().Replace(Resource.Id.devisContainerView, new _DevisFrag()).Commit();
+
         }
-        private void initEvent(object sender, EventArgs eventArgs)
+        void articleEvent(object sender, EventArgs eventArgs)
         {
-            //go back to sign in fragment
-            Activity.SupportFragmentManager.BeginTransaction().Replace(Resource.Id.containerView, new SignInFrag()).Commit();
-        }
-        private async void midSync(View vf)
-        {
+            devisTV.SetTextColor(Android.Graphics.Color.Rgb(173, 173, 173));
+            articleTv.SetTextColor(Android.Graphics.Color.Rgb(22, 22, 22));
+            Activity.SupportFragmentManager.BeginTransaction().Replace(Resource.Id.devisContainerView, new _ArticleFrag()).Commit();
 
-            await CallAPI(vf);
-        }
-        private async Task CallAPI(View vf)
-        {
-            try
-            {
-                string uri = "";
-
-                //only for testing with current emulator
-                if (Build.Hardware.Contains("ranchu"))
-                {
-                    uri = "https://10.0.2.2:44317/api/Devis";
-                    Console.WriteLine("********* ranchu emu *******");
-                }
-                else
-                    //ip = pc(host) ip address, port = extension remote url port 
-                    uri = "https://192.168.9.97:45461/api/Devis";
-
-                //bypassing SSLHandshakeException
-                HttpClientHandler clientHandler = new HttpClientHandler
-                {
-                    ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; }
-                };
-
-                HttpClient httpClient = new HttpClient(clientHandler);
-                HttpResponseMessage httpResponse = await httpClient.GetAsync(uri);
-
-                List<Article> listOfArticle = null;
-
-                if (httpResponse.IsSuccessStatusCode)
-                {
-                    string result = await httpResponse.Content.ReadAsStringAsync();
-                    var JsonString = JsonConvert.DeserializeObject<string>(result);
-
-
-                    string prettyJson = JToken.Parse(JsonString).ToString(Formatting.Indented);
-
-
-                    listOfArticle = JsonConvert.DeserializeObject<List<Article>>(prettyJson);
-
-                    Console.WriteLine("************** length of list article: " + listOfArticle.Count);
-
-                }
-                else
-                {
-                    Console.WriteLine("************** failed " + httpResponse.StatusCode + " " + httpResponse.ReasonPhrase);
-                }
-                //after retrieving the list of client from the server we setup the recyclerview
-                recyclerViewSetup(vf, listOfArticle);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("************** Error Message: " + ex.Message);
-                Console.WriteLine("************** Stack Trace: " + ex.StackTrace);
-            }
         }
     }
 }

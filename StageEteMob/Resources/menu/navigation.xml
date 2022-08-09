@@ -3,15 +3,16 @@
 
 	<item
         android:id="@+id/nav_set"
-        android:title="@string/title_set"/>
-		        <!--android:icon="@drawable/ic_home_black_24dp"-->
+        android:title="@string/title_set"
+		android:textSize="10sp"
+	    android:icon="@drawable/stats"/>
 
 
 	<item
         android:id="@+id/nav_get"
         
         android:title="@string/title_get"/>
-		<!--android:icon="@drawable/ic_dashboard_black_24dp"-->
+	<!--android:icon="@drawable/ic_dashboard_black_24dp"-->
 
 
 	<item

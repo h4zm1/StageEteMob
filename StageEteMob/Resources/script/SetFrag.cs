@@ -69,9 +69,9 @@ namespace StageEteMob
             string uri = "";
             //only for testing with current emulator
             if (Build.Hardware.Contains("ranchu"))
-                uri = "https://10.0.2.2:44317/api/Client";
+                uri = "https://10.0.2.2:44317/api/Client/Post";
             else
-                uri = "https://192.168.1.2:45456/api/Client";
+                uri = "https://192.168.1.2:45456/api/Client/Post";
 
             //bypassing SSLHandshakeException
             HttpClientHandler clientHandler = new HttpClientHandler

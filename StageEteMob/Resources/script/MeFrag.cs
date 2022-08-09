@@ -18,6 +18,9 @@ using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using StageEteMob.Resources.script;
 using Google.Android.Material.Tabs;
+using Android.Views.Animations;
+using Java.Lang;
+using Android.Animation;
 
 namespace StageEteMob
 {
@@ -48,11 +51,12 @@ namespace StageEteMob
 
             return fragmentView;
         }
-        private void initEvent(object sender, EventArgs eventArgs)
-        {
-          
-            //go back to sign in fragment
-            Activity.SupportFragmentManager.BeginTransaction().Replace(Resource.Id.containerView, new SignInFrag()).Commit();
-        }
+    private void initEvent(object sender, EventArgs eventArgs)
+    {
+
+        //go back to sign in fragment
+        Activity.SupportFragmentManager.BeginTransaction().Replace(Resource.Id.containerView, new SignInFrag()).Commit();
     }
+       
+}
 }

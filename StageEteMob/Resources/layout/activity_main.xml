@@ -27,42 +27,136 @@
 
 		<RelativeLayout
 			android:id="@+id/containerView"
+			android:paddingBottom="160px"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent">
 
 		</RelativeLayout>
 
-
-
-		<com.google.android.material.tabs.TabLayout
+		<View
 			android:layout_width="match_parent"
-			android:layout_height="56.0dp"
-			android:layout_marginEnd="0dp"
-			android:layout_marginStart="0dp"
-			android:paddingBottom="10px"
+			android:layout_height="4dp"
+			android:id="@+id/shadow"
+			android:layout_above="@id/fakeTabLayout"
+			android:background="@drawable/shadow"/>
+		<LinearLayout
+			android:id="@+id/fakeTabLayout"
+			android:orientation="horizontal"
 			android:layout_alignParentBottom="true"
-			android:id="@+id/tabLayout1">
-			<com.google.android.material.tabs.TabItem
-				android:layout_width="match_parent"
+			android:layout_height="50.0dp"
+			android:layout_width="match_parent">
+
+			<LinearLayout
+				android:layout_weight="1"
 				android:layout_height="match_parent"
-				android:text="set"
-				android:id="@+id/setTab" />
-			<com.google.android.material.tabs.TabItem
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:text="get"
-				android:id="@+id/getTab" />
-			<com.google.android.material.tabs.TabItem
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:text="devis"
-				android:id="@+id/devisTab" />
-			<com.google.android.material.tabs.TabItem
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:text="me"
-				android:id="@+id/meTab" />
-		</com.google.android.material.tabs.TabLayout>
+				android:layout_width="0dp"
+				android:minWidth="25px"
+				android:minHeight="25px">
+				<LinearLayout
+					android:orientation="vertical"
+					android:minWidth="25px"
+					android:minHeight="25px"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:id="@+id/linearLayout15">
+					<ImageView
+						android:layout_width="match_parent"
+						android:layout_height="0dp"
+						android:layout_weight="2"
+						android:src="@drawable/file"
+						android:id="@+id/imageView151"
+						android:contentDescription="description"
+						android:minWidth="25px"
+						android:minHeight="25px"
+						android:layout_marginVertical="5px" />
+					<TextView
+						android:text="Client"
+						app:autoSizeTextType="uniform"
+						app:autoSizeMaxTextSize="15sp"
+						app:autoSizeMinTextSize="6sp"
+						app:autoSizeStepGranularity="1sp"
+						android:gravity="center"
+						android:textAppearance="?android:attr/textAppearanceMedium"
+						android:layout_width="match_parent"
+						android:layout_height="0dp"
+						android:layout_weight="1"
+						android:id="@+id/textView152" />
+				</LinearLayout>
+
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_weight="1"
+				android:layout_height="fill_parent"
+				android:layout_width="0dp"
+				android:minWidth="25px"
+				android:minHeight="25px">
+				<LinearLayout
+					android:orientation="vertical"
+					android:minWidth="25px"
+					android:minHeight="25px"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:id="@+id/linearLayout16">
+					<ImageView
+						android:layout_width="match_parent"
+						android:layout_height="0dp"
+						android:layout_weight="2"
+						android:src="@drawable/plus"
+						android:id="@+id/imageView161"
+						android:contentDescription="description"
+						android:minWidth="25px"
+						android:minHeight="25px"
+						android:layout_marginBottom="5px"
+						android:layout_marginTop="5px" />
+
+				</LinearLayout>
+
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_weight="1"
+				android:layout_height="fill_parent"
+				android:layout_width="0dp"
+				android:minWidth="25px"
+				android:minHeight="25px">
+				<LinearLayout
+					android:orientation="vertical"
+					android:minWidth="25px"
+					android:minHeight="25px"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:id="@+id/linearLayout17">
+					<ImageView
+						android:layout_width="match_parent"
+						android:layout_height="0dp"
+						android:layout_weight="2"
+						android:src="@drawable/file"
+						android:id="@+id/imageView171"
+						android:contentDescription="description"
+						android:minWidth="25px"
+						android:minHeight="25px"
+						android:layout_marginVertical="5px" />
+					<TextView
+						android:text="Me"
+						app:autoSizeTextType="uniform"
+						app:autoSizeMaxTextSize="15sp"
+						app:autoSizeMinTextSize="6sp"
+						app:autoSizeStepGranularity="1sp"
+						android:gravity="center"
+						android:textAppearance="?android:attr/textAppearanceMedium"
+						android:layout_width="match_parent"
+						android:layout_height="0dp"
+						android:layout_weight="1"
+						android:id="@+id/textView172" />
+				</LinearLayout>
+
+			</LinearLayout>
+
+		</LinearLayout>
+
+
+
 	</RelativeLayout>
 
 	<!--<include
