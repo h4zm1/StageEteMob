@@ -45,7 +45,7 @@ namespace StageEteMob
         {
             var fragmentView = inflater.Inflate(Resource.Layout.content_signin, container, false);
 
-            TabLayout tab = Activity.FindViewById<TabLayout>(Resource.Id.fakeTabLayout);
+            LinearLayout tab = Activity.FindViewById<LinearLayout>(Resource.Id.fakeTabLayout);
             View shadow = Activity.FindViewById<View>(Resource.Id.shadow);
 
 
@@ -86,9 +86,8 @@ namespace StageEteMob
 
         private async void midSync(string val)
         {
-            //await CallAPI();
-
-            await SetAPI(val);
+            leavingSignin();
+            //await SetAPI(val);
         }
 
 
@@ -142,18 +141,11 @@ namespace StageEteMob
             incUser user = JsonConvert.DeserializeObject<incUser>(JsonString);
             Console.WriteLine("************** SUCCESS ");
 
-            //Activity instrad fragmentView cause it seems like Activity has global access to all resources?
-            TabLayout tab = Activity.FindViewById<TabLayout>(Resource.Id.fakeTabLayout);
-            View shadow = Activity.FindViewById<View>(Resource.Id.shadow);
-
-            //make the tablayout in MainaAtivity visible now
-            tab.Visibility = ViewStates.Visible;
-            shadow.Visibility = ViewStates.Visible;
-            //replace the login fragment
-            Activity.SupportFragmentManager.BeginTransaction().Replace(Resource.Id.containerView, new SetFrag()).Commit();
+            leavingSignin();
 
             if (result.IsSuccessStatusCode)
             {
+
                 var tokenJson = await result.Content.ReadAsStringAsync();
             }
             else
@@ -164,7 +156,19 @@ namespace StageEteMob
         {
             feedbackOut.Text = "";
         }
+        void leavingSignin()
+        {
+            //Activity instrad fragmentView cause it seems like Activity has global access to all resources?
+            LinearLayout tab = Activity.FindViewById<LinearLayout>(Resource.Id.fakeTabLayout);
+            View shadow = Activity.FindViewById<View>(Resource.Id.shadow);
 
+            //make the tablayout in MainaAtivity visible now
+            tab.Visibility = ViewStates.Visible;
+            shadow.Visibility = ViewStates.Visible;
+            //replace the login fragment
+            Activity.SupportFragmentManager.BeginTransaction().Replace(Resource.Id.containerView, new DevisFrag()).Commit();
+
+        }
         void setupSnackbar()
         {
 
