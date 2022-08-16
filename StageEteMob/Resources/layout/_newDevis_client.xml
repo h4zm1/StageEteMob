@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	app:layout_behavior="@string/appbar_scrolling_view_behavior"
+	tools:showIn="@layout/activity_main"
+	android:id="@+id/relativeLayInc"
+	android:minWidth="25px"
+	android:minHeight="25px">
+	<RelativeLayout
+		android:minWidth="25px"
+		android:minHeight="25px"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/relativeLayout1">
+
+		<ImageButton
+			android:src="@drawable/backarrow"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentTop="true"
+			android:layout_alignParentLeft="true"
+			android:scaleType="fitCenter"
+			android:id="@+id/goback"
+			android:pointerIcon="none"
+			android:layout_marginLeft="20px"
+			android:layout_marginTop="15px"
+			android:background="#ffffffff" />
+
+		<TextView
+			android:text="Next"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/nexttv"
+			android:layout_alignParentTop="true"
+			android:layout_alignParentRight="true"
+			android:layout_marginRight="20px"
+			android:layout_marginTop="15px"
+			android:textColor="#ff989898"/>
+	</RelativeLayout>
+
+	<LinearLayout
+		android:orientation="vertical"
+		android:layout_below="@id/relativeLayout1"
+		android:minWidth="25px"
+		android:minHeight="25px"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:id="@+id/linearLayout1"
+		android:paddingLeft="20px"
+		android:paddingRight="20px">
+		<androidx.recyclerview.widget.RecyclerView
+			android:minWidth="25px"
+			android:minHeight="25px"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:id="@+id/clientrv" />
+	</LinearLayout>
+
+</RelativeLayout>

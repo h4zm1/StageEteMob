@@ -35,7 +35,6 @@ namespace StageEteMob
 
             listV = fragmentView.FindViewById<ListView>(Resource.Id.listView1);
             nbrClient_TV = fragmentView.FindViewById<TextView>(Resource.Id.textView1);
-
             midSync();
 
             return fragmentView;

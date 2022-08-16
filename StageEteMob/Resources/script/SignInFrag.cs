@@ -162,11 +162,12 @@ namespace StageEteMob
             LinearLayout tab = Activity.FindViewById<LinearLayout>(Resource.Id.fakeTabLayout);
             View shadow = Activity.FindViewById<View>(Resource.Id.shadow);
 
+            //replace the login fragment
+            Activity.SupportFragmentManager.BeginTransaction().Replace(Resource.Id.containerView, new DevisFrag()).Commit();
+          
             //make the tablayout in MainaAtivity visible now
             tab.Visibility = ViewStates.Visible;
             shadow.Visibility = ViewStates.Visible;
-            //replace the login fragment
-            Activity.SupportFragmentManager.BeginTransaction().Replace(Resource.Id.containerView, new DevisFrag()).Commit();
 
         }
         void setupSnackbar()

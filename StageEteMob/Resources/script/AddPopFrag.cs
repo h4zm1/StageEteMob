@@ -51,7 +51,7 @@ namespace StageEteMob
 
         private void AddD_Click(object sender, EventArgs e)
         {
-            Activity.SupportFragmentManager.BeginTransaction().Replace(Resource.Id.containerView, new DevisFrag()).Commit();
+            Activity.SupportFragmentManager.BeginTransaction().Replace(Resource.Id.containerView, new _NewDevisName()).Commit();
 
             rotate_AntiClockwise(addImg);
             this.Dismiss();

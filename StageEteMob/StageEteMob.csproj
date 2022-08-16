@@ -64,8 +64,11 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Resources\script\model\Client.cs" />
     <Compile Include="Resources\script\model\Devis.cs" />
     <Compile Include="Resources\script\AddPopFrag.cs" />
+    <Compile Include="Resources\script\_NewDevisClient.cs" />
+    <Compile Include="Resources\script\_NewDevisName.cs" />
     <Compile Include="Resources\script\_DevisFrag.cs" />
     <Compile Include="Resources\script\_ArticleFrag.cs" />
     <Compile Include="Resources\script\GetFrag.cs" />
@@ -242,6 +245,21 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\yslight.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\_newDevis_name.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\backarrow.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\_newDevis_client.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

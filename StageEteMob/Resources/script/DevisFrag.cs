@@ -46,21 +46,20 @@ namespace StageEteMob
             Activity.SupportFragmentManager.BeginTransaction().Add(Resource.Id.devisContainerView, new _DevisFrag()).Commit();
 
 
-            //jsonDisplay.Click += initEvent;
             return fragmentView;
         }
         void devisEvent(object sender, EventArgs eventArgs)
         {
 
-            devisTV.SetTextColor(Android.Graphics.Color.Rgb(22, 22, 22));
-            articleTv.SetTextColor(Android.Graphics.Color.Rgb(173, 173, 173));
+            devisTV.SetTextColor(Android.Graphics.Color.Rgb(34, 34, 34));
+            articleTv.SetTextColor(Android.Graphics.Color.Rgb(152, 152, 152));
             Activity.SupportFragmentManager.BeginTransaction().Replace(Resource.Id.devisContainerView, new _DevisFrag()).Commit();
 
         }
         void articleEvent(object sender, EventArgs eventArgs)
         {
-            devisTV.SetTextColor(Android.Graphics.Color.Rgb(173, 173, 173));
-            articleTv.SetTextColor(Android.Graphics.Color.Rgb(22, 22, 22));
+            devisTV.SetTextColor(Android.Graphics.Color.Rgb(152, 152, 152));
+            articleTv.SetTextColor(Android.Graphics.Color.Rgb(34, 34, 34));
             Activity.SupportFragmentManager.BeginTransaction().Replace(Resource.Id.devisContainerView, new _ArticleFrag()).Commit();
 
         }
