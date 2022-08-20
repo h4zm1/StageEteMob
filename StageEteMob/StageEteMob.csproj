@@ -67,6 +67,8 @@
     <Compile Include="Resources\script\model\Client.cs" />
     <Compile Include="Resources\script\model\Devis.cs" />
     <Compile Include="Resources\script\AddPopFrag.cs" />
+    <Compile Include="Resources\script\_NewDevisSummary.cs" />
+    <Compile Include="Resources\script\_NewDevisArticle.cs" />
     <Compile Include="Resources\script\_NewDevisClient.cs" />
     <Compile Include="Resources\script\_NewDevisName.cs" />
     <Compile Include="Resources\script\_DevisFrag.cs" />
@@ -257,6 +259,18 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\_newDevis_client.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\_newDevis_article.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\_newDevis_summar.xml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>

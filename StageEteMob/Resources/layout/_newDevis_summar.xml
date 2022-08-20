@@ -14,32 +14,21 @@
 		android:minWidth="25px"
 		android:minHeight="25px"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent"
+		android:layout_height="wrap_content"
 		android:id="@+id/relativeLayout1">
 
-		<!--<ImageButton
+		<ImageButton
 			android:src="@drawable/backarrow"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_alignParentTop="true"
 			android:layout_alignParentLeft="true"
 			android:scaleType="fitCenter"
-			android:id="@+id/imageButton1"
+			android:id="@+id/goback"
 			android:pointerIcon="none"
-			android:layout_marginLeft="20px"
-			android:layout_marginTop="15px" 
-			android:background="#ffffffff" />-->
-
-		<EditText
-			android:inputType="textMultiLine"
-			android:layout_below="@id/nexttv"
-			android:layout_width="match_parent"
-			android:layout_height="178.0dp"
-			android:id="@+id/editText1"
-			android:hint="Pick a name for the new devis "
-			android:background="@android:color/transparent"
-			android:layout_marginHorizontal="20dp" />
-
+			android:layout_marginLeft="30px"
+			android:layout_marginTop="15px"
+			android:background="#ffffffff" />
 
 		<TextView
 			android:text="Next"
@@ -50,10 +39,36 @@
 			android:layout_alignParentTop="true"
 			android:layout_alignParentRight="true"
 			android:layout_marginRight="30px"
-			android:layout_marginTop="20px" 
+			android:layout_marginTop="20px"
 			android:textColor="#ff989898"/>
 	</RelativeLayout>
 
+	<LinearLayout
+		android:orientation="vertical"
+		android:layout_below="@id/relativeLayout1"
+		android:minWidth="25px"
+		android:minHeight="25px"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:id="@+id/linearLayout1"
+		android:paddingLeft="20px"
+		android:paddingRight="20px"
+		android:layout_marginTop="10px">
 
+		<TextView
+			android:text="Client :"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/textView1" />
+
+
+		<androidx.recyclerview.widget.RecyclerView
+			android:minWidth="25px"
+			android:minHeight="25px"
+			android:layout_width="match_parent"
+			android:layout_height="153.0dp"
+			android:id="@+id/finalarticlerv" />
+	</LinearLayout>
 
 </RelativeLayout>

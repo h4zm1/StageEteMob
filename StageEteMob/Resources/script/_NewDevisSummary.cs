@@ -23,7 +23,10 @@ using Android.Graphics;
 
 namespace StageEteMob
 {
-    public class _NewDevisClient : AndroidX.Fragment.App.Fragment
+    /// <summary>
+    /// TODO ADD LOADING INDICATOR
+    /// </summary>
+    public class _NewDevisSummary : AndroidX.Fragment.App.Fragment
     {
         TextView nextTV;
         ImageButton gobackIB;
@@ -36,54 +39,48 @@ namespace StageEteMob
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            var fragmentView = inflater.Inflate(Resource.Layout._newDevis_client, container, false);
+            var fragmentView = inflater.Inflate(Resource.Layout._newDevis_summar, container, false);
 
             nextTV = fragmentView.FindViewById<TextView>(Resource.Id.nexttv);
             gobackIB = fragmentView.FindViewById<ImageButton>(Resource.Id.goback);
 
             gobackIB.Click += GobackIB_Click;
-            midSync(fragmentView);
-            nextTV.Click += NextTV_Click;
-            return fragmentView;
-        }
-
-        private void NextTV_Click(object sender, EventArgs e)
-        {
-            if (nextState)
+            //midSync(fragmentView);
+            Console.WriteLine("Devis name: " + GlobVars.devisName);
+            Console.WriteLine("Client name; " + GlobVars.client.Nom);
+            foreach(Article art in GlobVars.listArticle)
             {
-                GlobVars.devisClientDone = true;
-                Activity.SupportFragmentManager.BeginTransaction().Replace(Resource.Id.containerView, new _NewDevisArticle()).Commit();
+                Console.WriteLine("article colde: "+ art.Name);
             }
+            return fragmentView;
         }
 
         private void GobackIB_Click(object sender, EventArgs e)
         {
-            GlobVars.devisClientDone = true;
-            Activity.SupportFragmentManager.BeginTransaction().Replace(Resource.Id.containerView, new _NewDevisName()).Commit();
+            Activity.SupportFragmentManager.BeginTransaction().Replace(Resource.Id.containerView, new _NewDevisArticle()).Commit();
+
         }
 
-        public void recyclerViewSetup(View fragmentView, List<Client> listOfClients)
+        public void recyclerViewSetup(View fragmentView, List<Article> listOfArticles)
         {
-            RecyclerView rv = fragmentView.FindViewById<RecyclerView>(Resource.Id.clientrv);
+            RecyclerView rv = fragmentView.FindViewById<RecyclerView>(Resource.Id.finalarticlerv);
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this.Context);
             rv.SetLayoutManager(mLayoutManager);
 
-            RVAdapter adapter = new RVAdapter(listOfClients, this);
-            rv.SetAdapter(adapter);
+            //RVAdapter adapter = new RVAdapter(listOfArticles, this);
+            //rv.SetAdapter(adapter);
         }
         private async void midSync(View vf)
         {
+            List<Article> listOfArticle = new List<Article>();
             //await CallAPI(vf);
-
-            List<Client> listOfClient = new List<Client>();
             for (int i = 0; i < 100; i++)
             {
-                Client c = new Client();
-                c.Nom = "a"+i.ToString();
-                listOfClient.Add(c);
+                Article c = new Article();
+                c.Name = i.ToString();
+                listOfArticle.Add(c);
             }
-            recyclerViewSetup(vf, listOfClient);
-
+            recyclerViewSetup(vf, listOfArticle);
         }
         private async Task CallAPI(View vf)
         {
@@ -94,12 +91,12 @@ namespace StageEteMob
                 //only for testing with current emulator
                 if (Build.Hardware.Contains("ranchu"))
                 {
-                    uri = "https://10.0.2.2:44317/api/Client/Get";
+                    uri = "https://10.0.2.2:44317/api/Devis/GetArticle";
                     Console.WriteLine("********* ranchu emu *******");
                 }
                 else
                     //ip = pc(host) ip address, port = extension remote url port 
-                    uri = "https://192.168.9.97:45461/api/Client/Get";
+                    uri = "https://192.168.9.97:45461/api/Devis/GetArticle";
 
                 //bypassing SSLHandshakeException
                 HttpClientHandler clientHandler = new HttpClientHandler
@@ -110,7 +107,7 @@ namespace StageEteMob
                 HttpClient httpClient = new HttpClient(clientHandler);
                 HttpResponseMessage httpResponse = await httpClient.GetAsync(uri);
 
-                List<Client> listOfClient = null;
+                List<Article> listOfArticle = null;
 
                 if (httpResponse.IsSuccessStatusCode)
                 {
@@ -121,19 +118,17 @@ namespace StageEteMob
                     string prettyJson = JToken.Parse(JsonString).ToString(Formatting.Indented);
 
 
-                    listOfClient = JsonConvert.DeserializeObject<List<Client>>(prettyJson);
+                    listOfArticle = JsonConvert.DeserializeObject<List<Article>>(prettyJson);
 
-                    Console.WriteLine("************** length of list article: " + listOfClient.Count);
+                    Console.WriteLine("************** length of list article: " + listOfArticle.Count);
 
                 }
                 else
                 {
                     Console.WriteLine("************** failed " + httpResponse.StatusCode + " " + httpResponse.ReasonPhrase);
                 }
-                ///TODO
-                ///Cache the list
                 //after retrieving the list of client from the server we setup the recyclerview
-                recyclerViewSetup(vf, listOfClient);
+                recyclerViewSetup(vf, listOfArticle);
             }
             catch (Exception ex)
             {

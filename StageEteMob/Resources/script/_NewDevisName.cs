@@ -27,6 +27,7 @@ namespace StageEteMob
     {
         Boolean nextState = false;
         TextView nextTV;
+        EditText devName;
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -37,17 +38,24 @@ namespace StageEteMob
         {
             var fragmentView = inflater.Inflate(Resource.Layout._newDevis_name, container, false);
 
-            EditText devName = fragmentView.FindViewById<EditText>(Resource.Id.editText1);
+             devName = fragmentView.FindViewById<EditText>(Resource.Id.editText1);
             nextTV = fragmentView.FindViewById<TextView>(Resource.Id.nexttv);
 
             devName.TextChanged += DevName_TextChanged;
             nextTV.Click += NextTV_Click;
+
+            if (GlobVars.devisNameDone)
+                devName.Text = GlobVars.devisName;
 
             return fragmentView;
         }
 
         private void NextTV_Click(object sender, EventArgs e)
         {
+            //save the name as a global var
+            GlobVars.devisName = devName.Text;
+            GlobVars.devisNameDone = true;
+            //"next" textview is highlighted
             if (nextState)
                 Activity.SupportFragmentManager.BeginTransaction().Replace(Resource.Id.containerView, new _NewDevisClient()).Commit();
 
