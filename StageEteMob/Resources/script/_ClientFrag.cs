@@ -5,9 +5,11 @@ using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using AndroidX.RecyclerView.Widget;
 using Google.Android.Material.Button;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using StageEteMob.Resources.script;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,45 +19,47 @@ using System.Threading.Tasks;
 
 namespace StageEteMob
 {
-    public class GetFrag : AndroidX.Fragment.App.Fragment
+    public class _ClientFrag : AndroidX.Fragment.App.Fragment
     {
-        TextView nbrClient_TV;
-        ListView listV;
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
-            // Create your fragment here
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
+            var fragmentView = inflater.Inflate(Resource.Layout._content_client, container, false);
 
-            var fragmentView = inflater.Inflate(Resource.Layout.content_get, container, false);
-
-            listV = fragmentView.FindViewById<ListView>(Resource.Id.listView1);
-            nbrClient_TV = fragmentView.FindViewById<TextView>(Resource.Id.textView1);
-            midSync();
-
+            midSync(fragmentView);
             return fragmentView;
         }
 
-        private async void midSync()
-        {
-            //await CallAPI();
 
-            await CallAPI();
-        }
-        struct client
+        public void recyclerViewSetup(View fragmentView, List<Client> listOfClients)
         {
-            public string Code;
-            public string Nom;
-            public string Mf;
-            public string Tel;
-            public string Mail;
-            public string Adresse;
-        };
-        private async Task CallAPI()
+            RecyclerView rv = fragmentView.FindViewById<RecyclerView>(Resource.Id.clientRecyclerView);
+            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this.Context);
+            rv.SetLayoutManager(mLayoutManager);
+
+            RVAdapter adapter = new RVAdapter(listOfClients);
+            rv.SetAdapter(adapter);
+        }
+        private async void midSync(View vf)
+        {
+            //await CallAPI(vf);
+
+            List<Client> listOfClient = new List<Client>();
+            for (int i = 0; i < 100; i++)
+            {
+                Client c = new Client();
+                c.Nom = "C" + i.ToString();
+                listOfClient.Add(c);
+            }
+            recyclerViewSetup(vf, listOfClient);
+
+        }
+        private async Task CallAPI(View vf)
         {
             try
             {
@@ -78,10 +82,9 @@ namespace StageEteMob
                 };
 
                 HttpClient httpClient = new HttpClient(clientHandler);
-                httpClient.MaxResponseContentBufferSize = 9999999;
                 HttpResponseMessage httpResponse = await httpClient.GetAsync(uri);
 
-
+                List<Client> listOfClient = null;
 
                 if (httpResponse.IsSuccessStatusCode)
                 {
@@ -90,39 +93,21 @@ namespace StageEteMob
 
 
                     string prettyJson = JToken.Parse(JsonString).ToString(Formatting.Indented);
-                    //editText.Text = prettyJson;
-
-                    //convert the json we getting from server to list of client (struct)
-                    client[] deptList = JsonConvert.DeserializeObject<client[]>(prettyJson);
-
-                    IList<String> listOfName = new List<string>();
-
-                    //filling a list with clients names
-                    int c = 1;
-                    foreach (var v in deptList)
-                    {
-                        listOfName.Add(c+ " : "+v.Nom.ToString());
-                        Console.WriteLine(c+ " names:: " + v.Nom.ToString());
-                        c++;
-                    }
-
-                    //displaying the number of clients
-                    nbrClient_TV.Text = "number of clients: "+deptList.Count().ToString();
 
 
-                    //linking the list of clients names to the list view
-                    listV.Adapter = new ArrayAdapter<String>(this.Context, Android.Resource.Layout.SimpleListItem1, listOfName);
+                    listOfClient = JsonConvert.DeserializeObject<List<Client>>(prettyJson);
 
-
-
-                    Console.WriteLine("************** length of json string: " + deptList.Count());
-                    //Console.WriteLine("************** Result: " + prettyJson);
+                    Console.WriteLine("************** length of list article: " + listOfClient.Count);
 
                 }
                 else
                 {
                     Console.WriteLine("************** failed " + httpResponse.StatusCode + " " + httpResponse.ReasonPhrase);
                 }
+                ///TODO
+                ///Cache the list
+                //after retrieving the list of client from the server we setup the recyclerview
+                recyclerViewSetup(vf, listOfClient);
             }
             catch (Exception ex)
             {

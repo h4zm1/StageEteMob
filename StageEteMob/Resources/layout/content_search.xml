@@ -16,16 +16,14 @@
 		android:minHeight="25px"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:id="@+id/linearLayout1"
-		android:paddingLeft="20px"
-		android:paddingRight="20px">
+		android:id="@+id/linearLayout1">
 		<LinearLayout
 			android:orientation="horizontal"
 			android:minWidth="25px"
 			android:minHeight="25px"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:paddingLeft="20px"
+			android:paddingLeft="40px"
 			android:id="@+id/linearLayout2">
 
 			<TextView
@@ -46,15 +44,25 @@
 				android:layout_width="wrap_content"
 				android:layout_height="match_parent"
 				android:paddingTop="30px"
+				android:paddingRight="20px"
 				android:clickable="true"
 				android:textStyle="bold"
 				android:id="@+id/articleText"
+				android:textColor="#ff989898" />
+			<TextView
+				android:text="Client"
+				android:textAppearance="?android:attr/textAppearanceMedium"
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent"
+				android:paddingTop="30px"
+				android:clickable="true"
+				android:textStyle="bold"
+				android:id="@+id/clientText"
 				android:textColor="#ff989898" />
 		</LinearLayout>
 
 		<RelativeLayout
 			android:id="@+id/devisContainerView"
-			
 			android:layout_width="match_parent"
 			android:layout_height="match_parent">
 

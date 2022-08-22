@@ -163,8 +163,9 @@ namespace StageEteMob
             View shadow = Activity.FindViewById<View>(Resource.Id.shadow);
 
             //replace the login fragment
-            Activity.SupportFragmentManager.BeginTransaction().Replace(Resource.Id.containerView, new DevisFrag()).Commit();
-          
+            Activity.SupportFragmentManager.BeginTransaction().Replace(Resource.Id.containerView, new MeFrag()).Commit();
+            ImageView tempIV = Activity.FindViewById<ImageView>(Resource.Id.imageView171);
+            tempIV.SetImageResource(Resource.Drawable.selecteduser);
             //make the tablayout in MainaAtivity visible now
             tab.Visibility = ViewStates.Visible;
             shadow.Visibility = ViewStates.Visible;

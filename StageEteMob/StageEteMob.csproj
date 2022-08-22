@@ -73,11 +73,11 @@
     <Compile Include="Resources\script\_NewDevisName.cs" />
     <Compile Include="Resources\script\_DevisFrag.cs" />
     <Compile Include="Resources\script\_ArticleFrag.cs" />
-    <Compile Include="Resources\script\GetFrag.cs" />
+    <Compile Include="Resources\script\_ClientFrag.cs" />
     <Compile Include="Resources\script\MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Resources\script\DevisFrag.cs" />
+    <Compile Include="Resources\script\SearchFrag.cs" />
     <Compile Include="Resources\script\SetFrag.cs" />
     <Compile Include="Resources\script\MeFrag.cs" />
     <Compile Include="Resources\script\SignInFrag.cs" />
@@ -124,7 +124,7 @@
     <AndroidResource Include="Resources\mipmap-xxxhdpi\ic_launcher_round.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\content_get.xml">
+    <AndroidResource Include="Resources\layout\_content_client.xml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -168,7 +168,7 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\content_devis.xml">
+    <AndroidResource Include="Resources\layout\content_search.xml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -274,6 +274,21 @@
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\listItem2.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\roundEdgeSelect.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\bin.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

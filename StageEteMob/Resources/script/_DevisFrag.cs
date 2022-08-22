@@ -40,7 +40,6 @@ namespace StageEteMob
         }
         public void recyclerViewSetup(View fragmentView, List<Devis> listOfDevis)
         {
-            List<Devis> listDevis = listOfDevis;
             RecyclerView rv = fragmentView.FindViewById<RecyclerView>(Resource.Id.devisRecyclerView);
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this.Context);
             rv.SetLayoutManager(mLayoutManager);
@@ -52,15 +51,14 @@ namespace StageEteMob
         {
 
             //await CallAPI(vf);
-            List<Devis> listOfClient = new List<Devis>();
-            //await CallAPI(vf);
+            List<Devis> listOfDevis = new List<Devis>();
             for (int i = 0; i < 100; i++)
             {
                 Devis c = new Devis();
-                c.code = i.ToString();
-                listOfClient.Add(c);
+                c.code = "D"+i.ToString();
+                listOfDevis.Add(c);
             }
-            recyclerViewSetup(vf, listOfClient);
+            recyclerViewSetup(vf, listOfDevis);
         }
         private async Task CallAPI(View vf)
         {

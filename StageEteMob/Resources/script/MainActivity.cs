@@ -24,12 +24,12 @@ namespace StageEteMob
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", MainLauncher = true)]
     public class MainActivity : AppCompatActivity, View.IOnTouchListener
     {
-        ImageView addImg, profileImg, cdImg;
-        TextView profileTv, cdTv;
+        public ImageView addImg, profileImg, cdImg;
+        public TextView profileTv, cdTv;
         Rect rect;
-        Boolean outside = false;
-        Boolean profileSelected = false;
-        Boolean cdSelected = false;
+        bool outside = false;
+        bool profileSelected = false;
+        bool cdSelected = false;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -64,6 +64,7 @@ namespace StageEteMob
             switch (e.Action)
             {
                 case MotionEventActions.Down:
+                    //search
                     if (v.Resources.GetResourceName(v.Id).Contains("imageView151"))
                     {
                         outside = false;
@@ -82,6 +83,7 @@ namespace StageEteMob
 
                         break;
                     }
+                    //add
                     if (v.Resources.GetResourceName(v.Id).Contains("imageView161"))
                     {
                         outside = false;
@@ -92,6 +94,7 @@ namespace StageEteMob
                         break;
 
                     }
+                    //me
                     if (v.Resources.GetResourceName(v.Id).Contains("imageView171"))
                     {
                         outside = false;
@@ -115,6 +118,7 @@ namespace StageEteMob
 
 
                 case MotionEventActions.Up:
+                    //add
                     if (v.Resources.GetResourceName(v.Id).Contains("imageView161"))
                     {
                         //lift finger(or wtv) while outside the button region => bail
@@ -133,6 +137,7 @@ namespace StageEteMob
                         break;
 
                     }
+                    //me
                     if (v.Resources.GetResourceName(v.Id).Contains("imageView171"))
                     {
                         //lift finger(or wtv) while outside the button region => bail
@@ -153,6 +158,7 @@ namespace StageEteMob
                         break;
 
                     }
+                    //search
                     if (v.Resources.GetResourceName(v.Id).Contains("imageView151"))
                     {
                         //lift finger(or wtv) while outside the button region => bail
@@ -165,7 +171,7 @@ namespace StageEteMob
                         //no need to keep commiting (not sure about performance)
                         if (cdSelected)
                             break;
-                        SupportFragmentManager.BeginTransaction().Replace(Resource.Id.containerView, new GetFrag()).Commit();
+                        SupportFragmentManager.BeginTransaction().Replace(Resource.Id.containerView, new SearchFrag()).Commit();
                         cdSelected = true;
                         //unselect the other faketab
                         profileImg.SetImageResource(Resource.Drawable.notselecteduser);

@@ -28,9 +28,10 @@ namespace StageEteMob
     /// </summary>
     public class _NewDevisSummary : AndroidX.Fragment.App.Fragment
     {
-        TextView nextTV;
+        TextView clientNameTV;
+        TextView devisNameTV;
+        TextView articleCountTV;
         ImageButton gobackIB;
-        Boolean nextState = false;
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -41,34 +42,46 @@ namespace StageEteMob
         {
             var fragmentView = inflater.Inflate(Resource.Layout._newDevis_summar, container, false);
 
-            nextTV = fragmentView.FindViewById<TextView>(Resource.Id.nexttv);
             gobackIB = fragmentView.FindViewById<ImageButton>(Resource.Id.goback);
-
+            clientNameTV = fragmentView.FindViewById<TextView>(Resource.Id.clientNameTV);
+            articleCountTV = fragmentView.FindViewById<TextView>(Resource.Id.articleCountTV);
+            devisNameTV = fragmentView.FindViewById<TextView>(Resource.Id.devisNameTV);
             gobackIB.Click += GobackIB_Click;
-            //midSync(fragmentView);
-            Console.WriteLine("Devis name: " + GlobVars.devisName);
-            Console.WriteLine("Client name; " + GlobVars.client.Nom);
-            foreach(Article art in GlobVars.listArticle)
-            {
-                Console.WriteLine("article colde: "+ art.Name);
-            }
+
+            sumSetup(fragmentView);
             return fragmentView;
         }
 
+        void sumSetup(View frag)
+        {
+            devisNameTV.Text = GlobVars.devisName;
+            var amount = GlobVars.selectListArticle.Count;
+            if (amount > 1)
+                articleCountTV.Text = amount.ToString() + "  Article";
+            else
+                articleCountTV.Text = amount.ToString() + "  Articles";
+
+            clientNameTV.Text = "Client: " + GlobVars.client.Nom;
+
+            recyclerViewSetup(frag, GlobVars.selectListArticle);
+
+            //midSync(fragmentView);
+
+        }
         private void GobackIB_Click(object sender, EventArgs e)
         {
+            Console.WriteLine("************* " + GlobVars.selectListArticle.Count);
             Activity.SupportFragmentManager.BeginTransaction().Replace(Resource.Id.containerView, new _NewDevisArticle()).Commit();
-
         }
 
         public void recyclerViewSetup(View fragmentView, List<Article> listOfArticles)
         {
-            RecyclerView rv = fragmentView.FindViewById<RecyclerView>(Resource.Id.finalarticlerv);
+            RecyclerView rv = fragmentView.FindViewById<RecyclerView>(Resource.Id.finalArticleRV);
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this.Context);
             rv.SetLayoutManager(mLayoutManager);
 
-            //RVAdapter adapter = new RVAdapter(listOfArticles, this);
-            //rv.SetAdapter(adapter);
+            RVAdapter adapter = new RVAdapter(listOfArticles, this);
+            rv.SetAdapter(adapter);
         }
         private async void midSync(View vf)
         {
@@ -134,19 +147,6 @@ namespace StageEteMob
             {
                 Console.WriteLine("************** Error Message: " + ex.Message);
                 Console.WriteLine("************** Stack Trace: " + ex.StackTrace);
-            }
-        }
-        public void toggleNext()
-        {
-            if (nextState)
-            {
-                nextState = false;
-                nextTV.SetTextColor(Color.Rgb(152, 152, 152));
-            }
-            else
-            {
-                nextState = true;
-                nextTV.SetTextColor(Color.Rgb(22, 22, 22));
             }
         }
 

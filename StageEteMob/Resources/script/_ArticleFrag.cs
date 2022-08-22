@@ -40,18 +40,24 @@ namespace StageEteMob
         }
         public void recyclerViewSetup(View fragmentView, List<Article> listOfArticle)
         {
-            List<Article> listArticle = listOfArticle;
             RecyclerView rv = fragmentView.FindViewById<RecyclerView>(Resource.Id.articleRecyclerView);
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this.Context);
             rv.SetLayoutManager(mLayoutManager);
 
-            RVAdapter adapter = new RVAdapter(listArticle);
+            RVAdapter adapter = new RVAdapter(listOfArticle);
             rv.SetAdapter(adapter);
         }
         private async void midSync(View vf)
         {
-
-            await CallAPI(vf);
+            //await CallAPI(vf);
+            List<Article> listOfArticle = new List<Article>();
+            for (int i = 0; i < 100; i++)
+            {
+                Article c = new Article();
+                c.Name = "A"+i.ToString();
+                listOfArticle.Add(c);
+            }
+            recyclerViewSetup(vf, listOfArticle);
         }
         private async Task CallAPI(View vf)
         {

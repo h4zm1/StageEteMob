@@ -16,15 +16,14 @@
 		android:minHeight="25px"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:id="@+id/linearLayout1"
-		android:paddingLeft="20px"
-		android:paddingRight="20px">
+		android:id="@+id/linearLayout1">
 		<androidx.recyclerview.widget.RecyclerView
 			android:minWidth="25px"
 			android:minHeight="25px"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
-			android:id="@+id/devisRecyclerView" />
+			android:id="@+id/devisRecyclerView"
+			android:background="#ffF3F3F3"/>
 	</LinearLayout>
 
 </RelativeLayout>

@@ -7,6 +7,7 @@
 	android:layout_height="match_parent"
 	app:layout_behavior="@string/appbar_scrolling_view_behavior"
 	tools:showIn="@layout/activity_main"
+	android:id="@+id/relativeLayInc"
 	android:minWidth="25px"
 	android:minHeight="25px">
 	<LinearLayout
@@ -15,34 +16,14 @@
 		android:minHeight="25px"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:paddingLeft="20px"
-		android:paddingRight="20px"
 		android:id="@+id/linearLayout1">
-		<TextView
-			android:text="Client list"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:id="@+id/label"
-			android:textSize="27sp"
-			android:textStyle="normal"
-			android:paddingTop="30px"
-			android:paddingBottom="30px"
-			android:textColor="#ff282828" />
-		<TextView
-			android:text="Loading..."
-			android:layout_width="match_parent"
-			android:layout_height="22.5dp"
-			android:id="@+id/textView1"
-			android:layout_marginBottom="7dp"/>
-
-		<ListView
+		<androidx.recyclerview.widget.RecyclerView
 			android:minWidth="25px"
 			android:minHeight="25px"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
-			android:id="@+id/listView1"/>
-
-
+			android:id="@+id/clientRecyclerView"
+			android:background="#ffF3F3F3"/>
 	</LinearLayout>
 
 </RelativeLayout>
