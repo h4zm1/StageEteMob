@@ -22,7 +22,7 @@ using Android.Graphics;
 namespace StageEteMob
 {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", MainLauncher = true)]
-    public class MainActivity : AppCompatActivity, View.IOnTouchListener
+    public class MainActivity : AppCompatActivity, View.IOnTouchListener, Java.IO.ISerializable
     {
         public ImageView addImg, profileImg, cdImg;
         public TextView profileTv, cdTv;
@@ -130,9 +130,12 @@ namespace StageEteMob
                         addImg.SetImageResource(Resource.Drawable.midb);
                         //rotate the image
                         rotate_Clockwise(addImg);
-
+                        Bundle args = new Bundle();
+                        args.PutSerializable("parent", this);
                         AndroidX.Fragment.App.FragmentTransaction ftrans = SupportFragmentManager.BeginTransaction();
                         AddPopFrag popFrag = new AddPopFrag();
+                        //sending a reference of this fragment to popFrag to access the reset meth here
+                        popFrag.Arguments = args;
                         popFrag.Show(ftrans, "");
                         break;
 
@@ -235,6 +238,13 @@ namespace StageEteMob
                     break;
             }
             return true;
+        }
+        public void resetFakeTabBar()
+        {
+            profileImg.SetImageResource(Resource.Drawable.notselecteduser);
+            cdImg.SetImageResource(Resource.Drawable.ns);
+            profileSelected = false;
+            cdSelected = false;
         }
         public void rotate_Clockwise(View view)
         {

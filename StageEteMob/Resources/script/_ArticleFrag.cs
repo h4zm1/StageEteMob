@@ -24,6 +24,7 @@ namespace StageEteMob
 {
     public class _ArticleFrag : AndroidX.Fragment.App.Fragment
     {
+        SearchFrag parent;
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -33,7 +34,11 @@ namespace StageEteMob
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             var fragmentView = inflater.Inflate(Resource.Layout._content_article, container, false);
-
+            if (Arguments != null)
+            {
+                //saving a reference of SearchFrag
+                parent = (SearchFrag)Arguments.GetSerializable("parent");
+            }
             midSync(fragmentView);
 
             return fragmentView;
@@ -49,15 +54,15 @@ namespace StageEteMob
         }
         private async void midSync(View vf)
         {
-            //await CallAPI(vf);
-            List<Article> listOfArticle = new List<Article>();
-            for (int i = 0; i < 100; i++)
-            {
-                Article c = new Article();
-                c.Name = "A"+i.ToString();
-                listOfArticle.Add(c);
-            }
-            recyclerViewSetup(vf, listOfArticle);
+            await CallAPI(vf);
+            //List<Article> listOfArticle = new List<Article>();
+            //for (int i = 0; i < 100; i++)
+            //{
+            //    Article c = new Article();
+            //    c.Name = "A"+i.ToString();
+            //    listOfArticle.Add(c);
+            //}
+            //recyclerViewSetup(vf, listOfArticle);
         }
         private async Task CallAPI(View vf)
         {
@@ -83,7 +88,8 @@ namespace StageEteMob
 
                 HttpClient httpClient = new HttpClient(clientHandler);
                 HttpResponseMessage httpResponse = await httpClient.GetAsync(uri);
-
+                //show this fragment
+                parent.startAndPass(this, null);
                 List<Article> listOfArticle = null;
 
                 if (httpResponse.IsSuccessStatusCode)

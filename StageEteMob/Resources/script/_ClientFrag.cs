@@ -21,6 +21,7 @@ namespace StageEteMob
 {
     public class _ClientFrag : AndroidX.Fragment.App.Fragment
     {
+        SearchFrag parent;
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -30,7 +31,11 @@ namespace StageEteMob
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             var fragmentView = inflater.Inflate(Resource.Layout._content_client, container, false);
-
+            if (Arguments != null)
+            {
+                //saving a reference of SearchFrag
+                parent = (SearchFrag)Arguments.GetSerializable("parent");
+            }
             midSync(fragmentView);
             return fragmentView;
         }
@@ -47,16 +52,16 @@ namespace StageEteMob
         }
         private async void midSync(View vf)
         {
-            //await CallAPI(vf);
+            await CallAPI(vf);
 
-            List<Client> listOfClient = new List<Client>();
-            for (int i = 0; i < 100; i++)
-            {
-                Client c = new Client();
-                c.Nom = "C" + i.ToString();
-                listOfClient.Add(c);
-            }
-            recyclerViewSetup(vf, listOfClient);
+            //List<Client> listOfClient = new List<Client>();
+            //for (int i = 0; i < 100; i++)
+            //{
+            //    Client c = new Client();
+            //    c.Nom = "C" + i.ToString();
+            //    listOfClient.Add(c);
+            //}
+            //recyclerViewSetup(vf, listOfClient);
 
         }
         private async Task CallAPI(View vf)
@@ -83,7 +88,8 @@ namespace StageEteMob
 
                 HttpClient httpClient = new HttpClient(clientHandler);
                 HttpResponseMessage httpResponse = await httpClient.GetAsync(uri);
-
+                //show this fragment
+                parent.startAndPass(this, null);
                 List<Client> listOfClient = null;
 
                 if (httpResponse.IsSuccessStatusCode)

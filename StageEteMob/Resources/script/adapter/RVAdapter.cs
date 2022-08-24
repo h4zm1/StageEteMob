@@ -60,7 +60,7 @@ namespace StageEteMob.Resources.script
             this.ndc = ndc;
             GlobVars.listClient = listClient;
             //if "next" in client selection got clicked
-            if (GlobVars.devisClientDone)
+            if (GlobVars.devisClientDone && GlobVars.client!=null)
             {
                 //go through the list of client we got from server
                 for (int i = 0; i < listClient.Count; i++)

@@ -20,6 +20,7 @@ using StageEteMob.Resources.script;
 using Google.Android.Material.Tabs;
 using AndroidX.RecyclerView.Widget;
 using Android.Graphics;
+using Com.Airbnb.Lottie;
 
 namespace StageEteMob
 {
@@ -30,6 +31,7 @@ namespace StageEteMob
     {
         TextView nextTV;
         ImageButton gobackIB;
+        LottieAnimationView img;
         Boolean nextState = false;
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -43,7 +45,7 @@ namespace StageEteMob
 
             nextTV = fragmentView.FindViewById<TextView>(Resource.Id.nexttv);
             gobackIB = fragmentView.FindViewById<ImageButton>(Resource.Id.goback);
-
+            img = fragmentView.FindViewById<LottieAnimationView>(Resource.Id.animation_view);
             nextTV.Click += NextTV_Click;
             gobackIB.Click += GobackIB_Click;
             midSync(fragmentView);
@@ -79,15 +81,15 @@ namespace StageEteMob
         }
         private async void midSync(View vf)
         {
-            List<Article> listOfArticle = new List<Article>();
-            //await CallAPI(vf);
-            for (int i = 0; i < 100; i++)
-            {
-                Article c = new Article();
-                c.Name = i.ToString();
-                listOfArticle.Add(c);
-            }
-            recyclerViewSetup(vf, listOfArticle);
+            //List<Article> listOfArticle = new List<Article>();
+            await CallAPI(vf);
+            //for (int i = 0; i < 100; i++)
+            //{
+            //    Article c = new Article();
+            //    c.Name = i.ToString();
+            //    listOfArticle.Add(c);
+            //}
+            //recyclerViewSetup(vf, listOfArticle);
         }
         private async Task CallAPI(View vf)
         {
@@ -113,7 +115,7 @@ namespace StageEteMob
 
                 HttpClient httpClient = new HttpClient(clientHandler);
                 HttpResponseMessage httpResponse = await httpClient.GetAsync(uri);
-
+                showList();
                 List<Article> listOfArticle = null;
 
                 if (httpResponse.IsSuccessStatusCode)
@@ -142,6 +144,10 @@ namespace StageEteMob
                 Console.WriteLine("************** Error Message: " + ex.Message);
                 Console.WriteLine("************** Stack Trace: " + ex.StackTrace);
             }
+        }
+        void showList()
+        {
+            img.Visibility = ViewStates.Gone;
         }
         public void toggleNext()
         {

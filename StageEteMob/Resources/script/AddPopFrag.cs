@@ -29,6 +29,7 @@ namespace StageEteMob
     public class AddPopFrag : AndroidX.Fragment.App.DialogFragment
     {
         ImageView addImg;
+        MainActivity parent;
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -46,14 +47,20 @@ namespace StageEteMob
             addC.Click += AddC_Click;
             addD.Click += AddD_Click;
             roundCornerSetup();
+            if (Arguments != null)
+            {
+                //saving a reference of MainActivity
+                parent = (MainActivity)Arguments.GetSerializable("parent");
+            }
             return fragmentView;
         }
 
         private void AddD_Click(object sender, EventArgs e)
         {
             Activity.SupportFragmentManager.BeginTransaction().Replace(Resource.Id.containerView, new _NewDevisName()).Commit();
-
             rotate_AntiClockwise(addImg);
+            //deselect all other icons in fake tabbar 
+            parent.resetFakeTabBar();
             this.Dismiss();
         }
 
@@ -61,10 +68,13 @@ namespace StageEteMob
         {
             Activity.SupportFragmentManager.BeginTransaction().Replace(Resource.Id.containerView, new SetFrag()).Commit();
             rotate_AntiClockwise(addImg);
+            //deselect all other icons in fake tabbar 
+            parent.resetFakeTabBar();
+
             this.Dismiss();
 
         }
-
+       
         void roundCornerSetup()
         {
             Window window = Dialog.Window;

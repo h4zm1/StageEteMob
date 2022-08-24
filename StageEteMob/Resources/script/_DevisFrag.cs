@@ -19,23 +19,30 @@ using Newtonsoft.Json.Linq;
 using StageEteMob.Resources.script;
 using Google.Android.Material.Tabs;
 using AndroidX.RecyclerView.Widget;
+using AndroidX.Fragment.App;
+using AndroidX.Core.OS;
+using AndroidX.Lifecycle;
+using Android.Nfc;
+using System.Timers;
 
 namespace StageEteMob
 {
     public class _DevisFrag : AndroidX.Fragment.App.Fragment
     {
+        SearchFrag parent;
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
         }
-
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             var fragmentView = inflater.Inflate(Resource.Layout._content_devis, container, false);
-
+            if (Arguments != null)
+            {
+                //saving a reference of SearchFrag
+                parent = (SearchFrag)Arguments.GetSerializable("parent");
+            }
             midSync(fragmentView);
-
             return fragmentView;
         }
         public void recyclerViewSetup(View fragmentView, List<Devis> listOfDevis)
@@ -50,15 +57,15 @@ namespace StageEteMob
         private async void midSync(View vf)
         {
 
-            //await CallAPI(vf);
-            List<Devis> listOfDevis = new List<Devis>();
-            for (int i = 0; i < 100; i++)
-            {
-                Devis c = new Devis();
-                c.code = "D"+i.ToString();
-                listOfDevis.Add(c);
-            }
-            recyclerViewSetup(vf, listOfDevis);
+            await CallAPI(vf);
+            //List<Devis> listOfDevis = new List<Devis>();
+            //for (int i = 0; i < 100; i++)
+            //{
+            //    Devis c = new Devis();
+            //    c.code = "D"+i.ToString();
+            //    listOfDevis.Add(c);
+            //}
+            //recyclerViewSetup(vf, listOfDevis);
         }
         private async Task CallAPI(View vf)
         {
@@ -83,8 +90,9 @@ namespace StageEteMob
                 };
 
                 HttpClient httpClient = new HttpClient(clientHandler);
-                HttpResponseMessage httpResponse = await httpClient.GetAsync(uri);
-
+                HttpResponseMessage httpResponse = await httpClient.GetAsync(uri);//blocks
+                //show this fragment
+                parent.startAndPass(this, null);
                 List<Devis> listOfDevis = null;
 
                 if (httpResponse.IsSuccessStatusCode)
@@ -114,5 +122,7 @@ namespace StageEteMob
                 Console.WriteLine("************** Stack Trace: " + ex.StackTrace);
             }
         }
+
+
     }
 }

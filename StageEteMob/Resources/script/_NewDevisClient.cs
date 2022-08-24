@@ -20,6 +20,7 @@ using StageEteMob.Resources.script;
 using Google.Android.Material.Tabs;
 using AndroidX.RecyclerView.Widget;
 using Android.Graphics;
+using Com.Airbnb.Lottie;
 
 namespace StageEteMob
 {
@@ -28,6 +29,7 @@ namespace StageEteMob
         TextView nextTV;
         ImageButton gobackIB;
         Boolean nextState = false;
+        LottieAnimationView img;
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -40,7 +42,7 @@ namespace StageEteMob
 
             nextTV = fragmentView.FindViewById<TextView>(Resource.Id.nexttv);
             gobackIB = fragmentView.FindViewById<ImageButton>(Resource.Id.goback);
-
+            img = fragmentView.FindViewById<LottieAnimationView>(Resource.Id.animation_view);
             gobackIB.Click += GobackIB_Click;
             midSync(fragmentView);
             nextTV.Click += NextTV_Click;
@@ -66,6 +68,7 @@ namespace StageEteMob
         {
             RecyclerView rv = fragmentView.FindViewById<RecyclerView>(Resource.Id.clientrv);
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this.Context);
+            
             rv.SetLayoutManager(mLayoutManager);
 
             RVAdapter adapter = new RVAdapter(listOfClients, this);
@@ -73,16 +76,16 @@ namespace StageEteMob
         }
         private async void midSync(View vf)
         {
-            //await CallAPI(vf);
+            await CallAPI(vf);
 
-            List<Client> listOfClient = new List<Client>();
-            for (int i = 0; i < 100; i++)
-            {
-                Client c = new Client();
-                c.Nom = "a"+i.ToString();
-                listOfClient.Add(c);
-            }
-            recyclerViewSetup(vf, listOfClient);
+            //List<Client> listOfClient = new List<Client>();
+            //for (int i = 0; i < 100; i++)
+            //{
+            //    Client c = new Client();
+            //    c.Nom = "a"+i.ToString();
+            //    listOfClient.Add(c);
+            //}
+            //recyclerViewSetup(vf, listOfClient);
 
         }
         private async Task CallAPI(View vf)
@@ -109,7 +112,7 @@ namespace StageEteMob
 
                 HttpClient httpClient = new HttpClient(clientHandler);
                 HttpResponseMessage httpResponse = await httpClient.GetAsync(uri);
-
+                showList();
                 List<Client> listOfClient = null;
 
                 if (httpResponse.IsSuccessStatusCode)
@@ -123,7 +126,7 @@ namespace StageEteMob
 
                     listOfClient = JsonConvert.DeserializeObject<List<Client>>(prettyJson);
 
-                    Console.WriteLine("************** length of list article: " + listOfClient.Count);
+                    Console.WriteLine("************** length of list client: " + listOfClient.Count);
 
                 }
                 else
@@ -140,6 +143,10 @@ namespace StageEteMob
                 Console.WriteLine("************** Error Message: " + ex.Message);
                 Console.WriteLine("************** Stack Trace: " + ex.StackTrace);
             }
+        }
+        void showList()
+        {
+            img.Visibility = ViewStates.Gone;
         }
         public void toggleNext()
         {
