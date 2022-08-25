@@ -58,6 +58,7 @@
 				android:id="@+id/devisNameTV"
 				android:layout_marginBottom="10px"
 				android:textAlignment="center"
+				android:textStyle="bold"
 				android:textColor="#ff222222" />
 			<TextView
 				android:text="Client :"
@@ -88,9 +89,10 @@
 				android:fadingEdge="none"
 				android:layout_marginTop="20px"
 				android:paddingTop="5dp"
-				android:background="#ffE9E9E9" />
+				android:background="@drawable/roundEdgeRV"
+			/>
 
-
+			<!--android:background="#ffE9E9E9"-->
 
 		</LinearLayout>
 		<Button

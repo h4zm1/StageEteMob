@@ -7,6 +7,7 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.CardView.Widget;
 using AndroidX.RecyclerView.Widget;
+using Java.Lang;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,11 +32,18 @@ namespace StageEteMob.Resources.script
         public bool isNormalArticle = false;
         public bool isNormalClient = false;
         public bool isNormalDevis = false;
+        /// <summary>
+        /// if there's at least 1 item selected, used for triggering the "Next" button
+        /// </summary>
         bool selected = false;
+        int qte = 0;
         _NewDevisClient ndc;
         _NewDevisArticle nda;
         _NewDevisSummary nds;
-        ///<summary> where the current selected item(s) are held</summary>
+        ///<summary> where the current selected item(s) are held
+        ///Ex: if select 5th item in list, we save the number 5 to positionList
+        ///And now we can easily retrieve the object with IndexOf (but somehow IndexOf don't want to work)
+        /// </summary>
         List<int> positionList = new List<int>();
         public override int ItemCount
         {
@@ -60,7 +68,7 @@ namespace StageEteMob.Resources.script
             this.ndc = ndc;
             GlobVars.listClient = listClient;
             //if "next" in client selection got clicked
-            if (GlobVars.devisClientDone && GlobVars.client!=null)
+            if (GlobVars.devisClientDone && GlobVars.client != null)
             {
                 //go through the list of client we got from server
                 for (int i = 0; i < listClient.Count; i++)
@@ -132,6 +140,7 @@ namespace StageEteMob.Resources.script
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
             RVHolder rvHolder = holder as RVHolder;
+
             if (isDevis)
             {
                 var devis = listDevis[position];
@@ -150,40 +159,46 @@ namespace StageEteMob.Resources.script
             if (isSum)
             {
                 var sum = listArticle[position];
-                Console.WriteLine("LENGHTTTTTT :: " + listArticle.Count);
                 rvHolder.topTV.Text = sum.Name;
+                rvHolder.np.Value = sum.Quantity;
             }
             rvHolder.position = position;
-
-            if (isNormalArticle || isNormalClient || isNormalDevis)
+            //int position2 = rvHolder.LayoutPosition;
+            //change the bg of the selected items
+            if (positionList.Contains(position))
             {
-                //change the card bg of all item in the list
-                if (positionList.Contains(position))
+                rvHolder.card.SetBackgroundResource(Resource.Drawable.roundEdgeSelect);
+                if (isArticle)
                 {
-                    //rvHolder.card.SetBackgroundResource(Resource.Drawable.roundEdge);
-                    //rvHolder.np.SetBackgroundColor(Color.Rgb(255, 255, 255));
-                    rvHolder.card.SetBackgroundResource(Resource.Drawable.roundEdgeSelect);
-                }
-                else
-                {
-                    //rvHolder.card.SetBackgroundResource(Resource.Drawable.roundEdgeSelect);
-                    //rvHolder.np.SetBackgroundColor(Color.Rgb(248, 248, 248));
-                    rvHolder.card.SetBackgroundResource(Resource.Drawable.roundEdge);
+                    rvHolder.QteTV.SetTextColor(Android.Graphics.Color.Rgb(34, 34, 34));
+                    Console.WriteLine(positionList.Count + " POSLIST ");
 
+
+                    //if (rvHolder.np.Enabled)
+                    //{
+
+                    rvHolder.np.Enabled = true;
+
+                    rvHolder.np.Value = GlobVars.selectListArticle[positionList.IndexOf(position)].Quantity;
+                    //Console.WriteLine(position + " 11111  " + position);
+                    //}
                 }
             }
+            //the the non selected items
             else
             {
-                //change the bg of the selected items
-                if (positionList.Contains(position))
+                rvHolder.card.SetBackgroundResource(Resource.Drawable.roundEdge);
+                if (isArticle)
                 {
-                    rvHolder.card.SetBackgroundResource(Resource.Drawable.roundEdgeSelect);
-                }
-                //the the non selected items
-                else
-                {
-                    rvHolder.card.SetBackgroundResource(Resource.Drawable.roundEdge);
+                    //if (!modifiedQteList.Contains(position))
+                    //{
 
+                    //    rvHolder.np.Enabled = false;
+                    //    Console.WriteLine(position + " 22222  " + position);
+                    //}
+                    rvHolder.np.Enabled = false;
+                    rvHolder.QteTV.SetTextColor(Android.Graphics.Color.Rgb(152, 152, 152));
+                    //Console.WriteLine(position + " 22222  " + position);
                 }
             }
 
@@ -194,10 +209,9 @@ namespace StageEteMob.Resources.script
         {
             View itemView = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.listItem, parent, false);
             RVHolder viewHolder = new RVHolder(itemView, this);
-           
+
             if (isSum)
             {
-                Console.WriteLine("WWWWWHWHWWHH " + positionList.Count);
                 viewHolder.bin.Click += (sender, e) =>
                 {
                     listArticle.RemoveAt(viewHolder.position);
@@ -205,15 +219,32 @@ namespace StageEteMob.Resources.script
                 };
             }
             //skip the click event on these lists
-            if (isNormalArticle || isNormalClient || isNormalDevis||isSum)
+            if (isNormalArticle || isNormalClient || isNormalDevis || isSum)
                 return viewHolder;
             viewHolder.ItemView.Click += (sender, e) =>
             {
                 //clicking same item => deselect it 
                 if (positionList.Contains(viewHolder.position))
                 {
+
+                    ///need to rest the article quantity to 0 when deselected before it's position get removed from positionList
+                    if (isArticle)
+                    {
+                        //NumberPicker np = s as NumberPicker;
+                        for (int i = 0; i < GlobVars.selectListArticle.Count; i++)
+                        {
+                            //positionList contains an index of item location (int)
+                            //viewHolder.layoutPosition is the position on sight (int)
+                            if (positionList[i] == viewHolder.LayoutPosition)
+                            {
+                                GlobVars.selectListArticle[i].Quantity = 0;
+                            }
+                        }
+                    }
+
                     positionList.Remove(viewHolder.position);
                     NotifyDataSetChanged();
+
                     if (selected)
                     {
                         if (isClient)
@@ -238,17 +269,12 @@ namespace StageEteMob.Resources.script
                     //maintain one selection while working with client
                     if (isClient)
                         positionList.Clear();
-                    if (GlobVars.selectListArticle.Count > 0)
-                    {
-
-                    }
-                    Console.WriteLine("position list count " + positionList.Count);
                     //adding this item position to a list
                     positionList.Add(viewHolder.position);
                     NotifyDataSetChanged();
 
-                    updateGlobals();
 
+                    updateGlobals();
                     //toggle "next" when selection >0 for both lists
                     if (!selected)
                     {
@@ -262,6 +288,21 @@ namespace StageEteMob.Resources.script
 
             };
 
+            ///Handling quantity selection for articles
+            if (isArticle)
+                viewHolder.np.ValueChanged += (s, e) =>
+            {
+                NumberPicker np = s as NumberPicker;
+                for (int i = 0; i < GlobVars.selectListArticle.Count; i++)
+                {
+                    //positionList contains an index of item location (int)
+                    //viewHolder.layoutPosition is the position on sight (int)
+                    if (positionList[i] == viewHolder.LayoutPosition)
+                    {
+                        GlobVars.selectListArticle[i].Quantity = np.Value;
+                    }
+                }
+            };
             return viewHolder;
 
         }
@@ -273,7 +314,7 @@ namespace StageEteMob.Resources.script
             }
             if (isArticle)
             {
-                //no need to update globallist in delete, just clear it
+                //just clear it and refill 
                 GlobVars.selectListArticle.Clear();
                 foreach (int i in positionList)
                 {
@@ -313,7 +354,10 @@ namespace StageEteMob.Resources.script
             np.WrapSelectorWheel = true;
             np.Value = 0;
             np.SelectionDividerHeight = 0;
-            if (rVAdapter.isClient&& !rVAdapter.isNormalClient)
+
+
+            //Display conditions
+            if (rVAdapter.isClient && !rVAdapter.isNormalClient)
             {
                 rightLL.Visibility = ViewStates.Gone;
                 bottomTV.Visibility = ViewStates.Gone;
@@ -330,6 +374,7 @@ namespace StageEteMob.Resources.script
             {
                 bin.Visibility = ViewStates.Gone;
                 bottomTV.Visibility = ViewStates.Gone;
+
             }
             if (rVAdapter.isNormalArticle)
             {

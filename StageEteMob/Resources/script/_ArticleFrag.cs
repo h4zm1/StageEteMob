@@ -25,6 +25,7 @@ namespace StageEteMob
     public class _ArticleFrag : AndroidX.Fragment.App.Fragment
     {
         SearchFrag parent;
+        TextView articleCountTV;
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -34,6 +35,8 @@ namespace StageEteMob
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             var fragmentView = inflater.Inflate(Resource.Layout._content_article, container, false);
+            articleCountTV = fragmentView.FindViewById<TextView>(Resource.Id.articleCounterTV);
+
             if (Arguments != null)
             {
                 //saving a reference of SearchFrag
@@ -110,6 +113,7 @@ namespace StageEteMob
                 {
                     Console.WriteLine("************** failed " + httpResponse.StatusCode + " " + httpResponse.ReasonPhrase);
                 }
+                articleCountTV.Text = "Number of articles: "+listOfArticle.Count.ToString();
                 //after retrieving the list of client from the server we setup the recyclerview
                 recyclerViewSetup(vf, listOfArticle);
             }

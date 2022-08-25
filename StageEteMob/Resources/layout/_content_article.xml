@@ -17,13 +17,24 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:id="@+id/linearLayout1">
+		<TextView
+			android:text=""
+			android:textAppearance="?android:attr/textAppearanceSmall"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/articleCounterTV"
+			android:layout_marginVertical="10px"
+			android:textColor="#ff222222"
+			android:layout_marginLeft="40px"
+			android:paddingTop="10px"
+			android:paddingBottom="10px" />
 		<androidx.recyclerview.widget.RecyclerView
 			android:minWidth="25px"
 			android:minHeight="25px"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:id="@+id/articleRecyclerView" 
-			android:background="#ffF3F3F3"/>
+		android:background="@drawable/roundEdgeRV"/>
 	</LinearLayout>
 
 </RelativeLayout>

@@ -33,6 +33,7 @@ namespace StageEteMob
         ImageButton gobackIB;
         LottieAnimationView img;
         Boolean nextState = false;
+        RecyclerView.LayoutManager mLayoutManager;
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -73,9 +74,9 @@ namespace StageEteMob
         public void recyclerViewSetup(View fragmentView, List<Article> listOfArticles)
         {
             RecyclerView rv = fragmentView.FindViewById<RecyclerView>(Resource.Id.articlerv);
-            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this.Context);
+            mLayoutManager = new LinearLayoutManager(this.Context);
             rv.SetLayoutManager(mLayoutManager);
-
+            
             RVAdapter adapter = new RVAdapter(listOfArticles, this);
             rv.SetAdapter(adapter);
         }

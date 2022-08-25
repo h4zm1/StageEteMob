@@ -25,6 +25,7 @@
 			android:id="@+id/ClientTV"
 			android:paddingHorizontal="80px"
 			android:paddingTop="30px"
+			android:textStyle="bold"
 			android:paddingBottom="20px" />
 		<TextView
 			android:text="Add Devis"
@@ -34,6 +35,7 @@
 			android:id="@+id/devisTV"
 			android:paddingHorizontal="80px"
 			android:paddingBottom="30px"
+			android:textStyle="bold"
 			android:paddingTop="20px" />
 
 

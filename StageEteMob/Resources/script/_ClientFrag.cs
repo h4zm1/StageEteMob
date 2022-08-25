@@ -22,6 +22,7 @@ namespace StageEteMob
     public class _ClientFrag : AndroidX.Fragment.App.Fragment
     {
         SearchFrag parent;
+        TextView clientCountTV;
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -31,6 +32,7 @@ namespace StageEteMob
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             var fragmentView = inflater.Inflate(Resource.Layout._content_client, container, false);
+            clientCountTV = fragmentView.FindViewById<TextView>(Resource.Id.clientCounterTV);
             if (Arguments != null)
             {
                 //saving a reference of SearchFrag
@@ -88,7 +90,7 @@ namespace StageEteMob
 
                 HttpClient httpClient = new HttpClient(clientHandler);
                 HttpResponseMessage httpResponse = await httpClient.GetAsync(uri);
-                //show this fragment
+                //show this fragment when the list is ready (got downloaded)
                 parent.startAndPass(this, null);
                 List<Client> listOfClient = null;
 
@@ -112,6 +114,7 @@ namespace StageEteMob
                 }
                 ///TODO
                 ///Cache the list
+                clientCountTV.Text = "Number of Clients: "+listOfClient.Count.ToString();
                 //after retrieving the list of client from the server we setup the recyclerview
                 recyclerViewSetup(vf, listOfClient);
             }

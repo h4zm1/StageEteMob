@@ -75,7 +75,7 @@
 			android:paddingLeft="5px"
 			android:paddingRight="5px"
 			android:id="@+id/clientrv"
-			android:background="#ffE9E9E9" />
+				android:background="@drawable/roundEdgeRV" />
 	</LinearLayout>
 
 </RelativeLayout>

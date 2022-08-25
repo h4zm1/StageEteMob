@@ -20,5 +20,6 @@ namespace StageEteMob.Resources.script
         public string Code { get; set; }
         public string Tva { get; set; }
         public string Designation { get; set; }
+        public int Quantity { get; set; }
     }
 }
