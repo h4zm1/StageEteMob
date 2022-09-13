@@ -61,7 +61,7 @@
 				android:textStyle="bold"
 				android:textColor="#ff222222" />
 			<TextView
-				android:text="Client :"
+				android:text="Client: "
 				android:textAppearance="?android:attr/textAppearanceMedium"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
@@ -92,6 +92,15 @@
 				android:background="@drawable/roundEdgeRV"
 			/>
 
+			<TextView
+				android:text="Total: "
+				android:textAppearance="?android:attr/textAppearanceMedium"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="30px"
+				android:textColor="#ff222222"
+				android:id="@+id/totalCostTV"
+				android:layout_marginBottom="10px" />
 			<!--android:background="#ffE9E9E9"-->
 
 		</LinearLayout>
@@ -100,7 +109,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_alignParentBottom="true"
-			android:id="@+id/button1"
+			android:id="@+id/confirmBtn"
 			android:background="#ff222222" />
 	</RelativeLayout>
 

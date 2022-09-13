@@ -30,8 +30,9 @@ namespace StageEteMob
     {
         TextView clientNameTV;
         TextView devisNameTV;
-        TextView articleCountTV;
+        public TextView articleCountTV, totalCostTV;
         ImageButton gobackIB;
+        public Button confirmBtn;
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -46,10 +47,35 @@ namespace StageEteMob
             clientNameTV = fragmentView.FindViewById<TextView>(Resource.Id.clientNameTV);
             articleCountTV = fragmentView.FindViewById<TextView>(Resource.Id.articleCountTV);
             devisNameTV = fragmentView.FindViewById<TextView>(Resource.Id.devisNameTV);
-            gobackIB.Click += GobackIB_Click;
+            confirmBtn = fragmentView.FindViewById<Button>(Resource.Id.confirmBtn);
+            totalCostTV = fragmentView.FindViewById<TextView>(Resource.Id.totalCostTV);
 
+
+            gobackIB.Click += GobackIB_Click;
+            confirmBtn.Click += ConfirmBtn_Click;
             sumSetup(fragmentView);
             return fragmentView;
+        }
+
+        private void ConfirmBtn_Click(object sender, EventArgs e)
+        {
+
+            Devis devis = new Devis();
+            devis.nom = GlobVars.devisName;
+            devis.clientCode = GlobVars.client.Code;
+            devis.IdUtilisateur = GlobVars.user.IdUtilisateur;
+            foreach (Article article in GlobVars.selectListArticle)
+            {
+                Console.WriteLine("##### " + article.Name);
+                devis.listArticle.Add(article);
+            }
+
+            var json = JsonConvert.SerializeObject(devis);
+            Console.WriteLine("**************************************");
+            Console.WriteLine(json);
+
+            Console.WriteLine("**************************************");
+            midSync(json);
         }
 
         void sumSetup(View frag)
@@ -57,9 +83,9 @@ namespace StageEteMob
             devisNameTV.Text = GlobVars.devisName;
             var amount = GlobVars.selectListArticle.Count;
             if (amount > 1)
-                articleCountTV.Text = amount.ToString() + "  Article";
-            else
                 articleCountTV.Text = amount.ToString() + "  Articles";
+            else
+                articleCountTV.Text = amount.ToString() + "  Article";
 
             clientNameTV.Text = "Client: " + GlobVars.client.Nom;
 
@@ -83,72 +109,39 @@ namespace StageEteMob
             RVAdapter adapter = new RVAdapter(listOfArticles, this);
             rv.SetAdapter(adapter);
         }
-        private async void midSync(View vf)
+        private async void midSync(string val)
         {
-            List<Article> listOfArticle = new List<Article>();
-            //await CallAPI(vf);
-            for (int i = 0; i < 100; i++)
-            {
-                Article c = new Article();
-                c.Name = i.ToString();
-                listOfArticle.Add(c);
-            }
-            recyclerViewSetup(vf, listOfArticle);
-        }
-        private async Task CallAPI(View vf)
-        {
-            try
-            {
-                string uri = "";
-
-                //only for testing with current emulator
-                if (Build.Hardware.Contains("ranchu"))
-                {
-                    uri = "https://10.0.2.2:44317/api/Devis/GetArticle";
-                    Console.WriteLine("********* ranchu emu *******");
-                }
-                else
-                    //ip = pc(host) ip address, port = extension remote url port 
-                    uri = "https://192.168.9.97:45461/api/Devis/GetArticle";
-
-                //bypassing SSLHandshakeException
-                HttpClientHandler clientHandler = new HttpClientHandler
-                {
-                    ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; }
-                };
-
-                HttpClient httpClient = new HttpClient(clientHandler);
-                HttpResponseMessage httpResponse = await httpClient.GetAsync(uri);
-
-                List<Article> listOfArticle = null;
-
-                if (httpResponse.IsSuccessStatusCode)
-                {
-                    string result = await httpResponse.Content.ReadAsStringAsync();
-                    var JsonString = JsonConvert.DeserializeObject<string>(result);
-
-
-                    string prettyJson = JToken.Parse(JsonString).ToString(Formatting.Indented);
-
-
-                    listOfArticle = JsonConvert.DeserializeObject<List<Article>>(prettyJson);
-
-                    Console.WriteLine("************** length of list article: " + listOfArticle.Count);
-
-                }
-                else
-                {
-                    Console.WriteLine("************** failed " + httpResponse.StatusCode + " " + httpResponse.ReasonPhrase);
-                }
-                //after retrieving the list of client from the server we setup the recyclerview
-                recyclerViewSetup(vf, listOfArticle);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("************** Error Message: " + ex.Message);
-                Console.WriteLine("************** Stack Trace: " + ex.StackTrace);
-            }
+            await SetAPI(val);
         }
 
+        private async Task SetAPI(string valueToSend)
+        {
+            string uri = "";
+            //only for testing with current emulator
+            if (Build.Hardware.Contains("ranchu"))
+                uri = "https://10.0.2.2:44317/api/Devis/Put";
+            else
+                uri = "https://192.168.1.2:45456/api/Devis/Put";
+
+            //bypassing SSLHandshakeException
+            HttpClientHandler clientHandler = new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; }
+            };
+
+            var client = new HttpClient(clientHandler);
+            var httpContent = new StringContent("");
+
+            var result = await client.PutAsync(uri + "?value=" + valueToSend, httpContent);
+            //this how to retrieve the returned string from the POST call
+            var fromPut = await result.Content.ReadAsStringAsync();
+            Console.WriteLine(fromPut);
+            if (result.IsSuccessStatusCode)
+            {
+                var tokenJson = await result.Content.ReadAsStringAsync();
+            }
+            else
+                Console.WriteLine("************** FAILED: " + result.ReasonPhrase);
+        }
     }
 }

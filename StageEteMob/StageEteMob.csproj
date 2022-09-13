@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources\script\model\Client.cs" />
+    <Compile Include="Resources\script\model\User.cs" />
     <Compile Include="Resources\script\model\Devis.cs" />
     <Compile Include="Resources\script\AddPopFrag.cs" />
     <Compile Include="Resources\script\_NewDevisSummary.cs" />

@@ -44,7 +44,7 @@ namespace StageEteMob
             var fragmentView = inflater.Inflate(Resource.Layout.content_me, container, false);
 
             TextView jsonDisplay = fragmentView.FindViewById<TextView>(Resource.Id.tvJson);
-            jsonDisplay.Text = GlobVars.userJson;
+            //jsonDisplay.Text = GlobVars.userJson;
 
             MaterialButton btn = fragmentView.FindViewById<MaterialButton>(Resource.Id.signoutBtn);
             btn.Click += initEvent;

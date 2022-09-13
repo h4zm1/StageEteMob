@@ -30,6 +30,10 @@ namespace StageEteMob
     public class _DevisFrag : AndroidX.Fragment.App.Fragment
     {
         SearchFrag parent;
+        int days = 30;
+        TextView thirtyTv;
+        TextView sixtyTv;
+        TextView ninetyTv;
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -37,11 +41,44 @@ namespace StageEteMob
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             var fragmentView = inflater.Inflate(Resource.Layout._content_devis, container, false);
+
+            //part of the loading animation setup
             if (Arguments != null)
             {
                 //saving a reference of SearchFrag
                 parent = (SearchFrag)Arguments.GetSerializable("parent");
             }
+
+            thirtyTv = fragmentView.FindViewById<TextView>(Resource.Id.thirtyDays);
+            sixtyTv = fragmentView.FindViewById<TextView>(Resource.Id.sixtydays);
+            ninetyTv = fragmentView.FindViewById<TextView>(Resource.Id.nintydays);
+            thirtyTv.Click += (o, i) =>
+            {
+                days = 30;
+                thirtyTv.SetTextColor(Android.Graphics.Color.Rgb(34, 34, 34));
+                sixtyTv.SetTextColor(Android.Graphics.Color.Rgb(152, 152, 152));
+                ninetyTv.SetTextColor(Android.Graphics.Color.Rgb(152, 152, 152));
+                midSync(fragmentView);
+
+            };
+            sixtyTv.Click += (o, i) =>
+            {
+                days = 60;
+                thirtyTv.SetTextColor(Android.Graphics.Color.Rgb(152, 152, 152));
+                sixtyTv.SetTextColor(Android.Graphics.Color.Rgb(34, 34, 34));
+                ninetyTv.SetTextColor(Android.Graphics.Color.Rgb(152, 152, 152));
+                midSync(fragmentView);
+
+            };
+            ninetyTv.Click += (o, i) =>
+            {
+                days = 90;
+                thirtyTv.SetTextColor(Android.Graphics.Color.Rgb(152, 152, 152));
+                sixtyTv.SetTextColor(Android.Graphics.Color.Rgb(152, 152, 152));
+                ninetyTv.SetTextColor(Android.Graphics.Color.Rgb(34, 34, 34));
+                midSync(fragmentView);
+
+            };
             midSync(fragmentView);
             return fragmentView;
         }
@@ -56,16 +93,7 @@ namespace StageEteMob
         }
         private async void midSync(View vf)
         {
-
             await CallAPI(vf);
-            //List<Devis> listOfDevis = new List<Devis>();
-            //for (int i = 0; i < 100; i++)
-            //{
-            //    Devis c = new Devis();
-            //    c.code = "D"+i.ToString();
-            //    listOfDevis.Add(c);
-            //}
-            //recyclerViewSetup(vf, listOfDevis);
         }
         private async Task CallAPI(View vf)
         {
@@ -76,12 +104,12 @@ namespace StageEteMob
                 //only for testing with current emulator
                 if (Build.Hardware.Contains("ranchu"))
                 {
-                    uri = "https://10.0.2.2:44317/api/Devis/GetTimedDevis";
+                    uri = "https://10.0.2.2:44317/api/Devis/Post";
                     Console.WriteLine("********* ranchu emu *******");
                 }
                 else
                     //ip = pc(host) ip address, port = extension remote url port 
-                    uri = "https://192.168.9.97:45461/api/Devis/GetTimedDevis";
+                    uri = "https://192.168.1.2:45461/api/Devis/GetTimedDevis";
 
                 //bypassing SSLHandshakeException
                 HttpClientHandler clientHandler = new HttpClientHandler
@@ -89,8 +117,13 @@ namespace StageEteMob
                     ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; }
                 };
 
-                HttpClient httpClient = new HttpClient(clientHandler);
-                HttpResponseMessage httpResponse = await httpClient.GetAsync(uri);//blocks
+                var client = new HttpClient(clientHandler);
+                var httpContent = new StringContent("");
+
+                var httpResponse = await client.PostAsync(uri + "?days=" + days, httpContent);
+
+                //this how to retrieve the returned string from the POST call
+                var fromPost = await httpResponse.Content.ReadAsStringAsync();
                 //show this fragment
                 parent.startAndPass(this, null);
                 List<Devis> listOfDevis = null;
@@ -106,13 +139,15 @@ namespace StageEteMob
 
                     listOfDevis = JsonConvert.DeserializeObject<List<Devis>>(prettyJson);
 
-                    Console.WriteLine("************** length of list article: " + listOfDevis.Count);
+                    Console.WriteLine("************** length of list deviis: " + listOfDevis.Count);
 
                 }
                 else
                 {
                     Console.WriteLine("************** failed " + httpResponse.StatusCode + " " + httpResponse.ReasonPhrase);
                 }
+
+
                 //after retrieving the list of client from the server we setup the recyclerview
                 recyclerViewSetup(vf, listOfDevis);
             }

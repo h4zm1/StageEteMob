@@ -11,13 +11,11 @@ using System.Text;
 
 namespace StageEteMob.Resources.script
 {
-    public class Client
+    public class User
     {
-        public int Code { get; set; }
-        public string Nom { get; set; }
-        public string Mf { get; set; }
-        public string Tel { get; set; }
-        public string Mail { get; set; }
-        public string Adresse { get; set; }
+        public int id { get; set; }
+        public string login { get; set; }
+        public string password { get; set; }
+        public int IdUtilisateur { get; set; }
     }
 }

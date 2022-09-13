@@ -14,7 +14,7 @@ namespace StageEteMob.Resources.script
     public class Article
     {
         public string Name { get; set; }
-        public string Achat { get; set; }
+        public decimal Achat { get; set; }
         public string Categorie { get; set; }
         public string Vente { get; set; }
         public string Code { get; set; }

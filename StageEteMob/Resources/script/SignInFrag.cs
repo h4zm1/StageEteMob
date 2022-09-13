@@ -25,12 +25,6 @@ namespace StageEteMob
 {
     public class SignInFrag : AndroidX.Fragment.App.Fragment
     {
-        struct incUser
-        {
-            public string login;
-            public string password;
-            public string code;
-        };
         TextView feedbackOut;
         Timer timer = new Timer(5000);
         MaterialButton signinbtn;
@@ -86,8 +80,8 @@ namespace StageEteMob
 
         private async void midSync(string val)
         {
-            leavingSignin();
-            //await SetAPI(val);
+            //leavingSignin();
+            await SetAPI(val);
         }
 
 
@@ -135,10 +129,11 @@ namespace StageEteMob
 
             //make the json better formatted and save it
             string prettyJson = JToken.Parse(JsonString).ToString(Formatting.Indented);
-            GlobVars.userJson = prettyJson;
+            Console.WriteLine("USER:: " + prettyJson);
+            //GlobVars.userJson = prettyJson;
 
-            //deserialize into struct
-            incUser user = JsonConvert.DeserializeObject<incUser>(JsonString);
+            //deserialize into User
+            GlobVars.user = JsonConvert.DeserializeObject<User>(JsonString);
             Console.WriteLine("************** SUCCESS ");
 
             leavingSignin();

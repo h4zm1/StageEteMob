@@ -120,10 +120,10 @@ namespace StageEteMob
                     string result = await httpResponse.Content.ReadAsStringAsync();
                     var JsonString = JsonConvert.DeserializeObject<string>(result);
 
-
+                    //cleaning up the string (not a pure json)
                     string prettyJson = JToken.Parse(JsonString).ToString(Formatting.Indented);
 
-
+                    //yes, it works 
                     listOfClient = JsonConvert.DeserializeObject<List<Client>>(prettyJson);
 
                     Console.WriteLine("************** length of list client: " + listOfClient.Count);

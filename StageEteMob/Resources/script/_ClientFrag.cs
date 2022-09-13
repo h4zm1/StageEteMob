@@ -23,6 +23,11 @@ namespace StageEteMob
     {
         SearchFrag parent;
         TextView clientCountTV;
+        public struct OutDelVal
+        {
+            public int utilisateurId;
+            public int code;
+        }
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -56,15 +61,34 @@ namespace StageEteMob
         {
             await CallAPI(vf);
 
-            //List<Client> listOfClient = new List<Client>();
-            //for (int i = 0; i < 100; i++)
-            //{
-            //    Client c = new Client();
-            //    c.Nom = "C" + i.ToString();
-            //    listOfClient.Add(c);
-            //}
-            //recyclerViewSetup(vf, listOfClient);
+        }
+        private async Task DeletePI(string delJson)
+        {
+            string uri = "";
+            //only for testing with current emulator
+            if (Build.Hardware.Contains("ranchu"))
+                uri = "https://10.0.2.2:44317/api/Client/Delete";
+            else
+                uri = "https://192.168.1.2:45456/api/Client/Delete";
 
+            //bypassing SSLHandshakeException
+            HttpClientHandler clientHandler = new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; }
+            };
+
+            var client = new HttpClient(clientHandler);
+
+            var result = await client.DeleteAsync(uri + "?delJson=" + delJson);
+            //this how to retrieve the res-querry string from the delete call
+            var fromDelete = await result.Content.ReadAsStringAsync();
+            Console.WriteLine(fromDelete);
+            if (result.IsSuccessStatusCode)
+            {
+                var tokenJson = await result.Content.ReadAsStringAsync();
+            }
+            else
+                Console.WriteLine("************** FAILED: " + result.ReasonPhrase);
         }
         private async Task CallAPI(View vf)
         {
@@ -114,7 +138,7 @@ namespace StageEteMob
                 }
                 ///TODO
                 ///Cache the list
-                clientCountTV.Text = "Number of Clients: "+listOfClient.Count.ToString();
+                clientCountTV.Text = "Number of Clients: " + listOfClient.Count.ToString();
                 //after retrieving the list of client from the server we setup the recyclerview
                 recyclerViewSetup(vf, listOfClient);
             }

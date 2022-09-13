@@ -44,8 +44,8 @@ namespace StageEteMob
             TextView addC = fragmentView.FindViewById<TextView>(Resource.Id.ClientTV);
             TextView addD = fragmentView.FindViewById<TextView>(Resource.Id.devisTV);
             addImg = Activity.FindViewById<ImageView>(Resource.Id.imageView161);
-            addC.Click += AddC_Click;
-            addD.Click += AddD_Click;
+            addC.Click += AddC_Click;//add client
+            addD.Click += AddD_Click;//add devis
             roundCornerSetup();
             if (Arguments != null)
             {
@@ -57,13 +57,25 @@ namespace StageEteMob
 
         private void AddD_Click(object sender, EventArgs e)
         {
+            //reseting globs
+            resetGlobs();
+
             Activity.SupportFragmentManager.BeginTransaction().Replace(Resource.Id.containerView, new _NewDevisName()).Commit();
             rotate_AntiClockwise(addImg);
             //deselect all other icons in fake tabbar 
             parent.resetFakeTabBar();
             this.Dismiss();
         }
-
+        void resetGlobs()
+        {
+            GlobVars.devisNameDone = GlobVars.devisClientDone = GlobVars.devisArticleDone = false;
+            GlobVars.devisName = "";
+            GlobVars.client = null;
+            GlobVars.user = null;
+            GlobVars.listArticle.Clear();
+            GlobVars.listClient.Clear();
+            GlobVars.selectListArticle.Clear();
+        }
         private void AddC_Click(object sender, EventArgs e)
         {
             Activity.SupportFragmentManager.BeginTransaction().Replace(Resource.Id.containerView, new SetFrag()).Commit();
@@ -74,7 +86,7 @@ namespace StageEteMob
             this.Dismiss();
 
         }
-       
+
         void roundCornerSetup()
         {
             Window window = Dialog.Window;

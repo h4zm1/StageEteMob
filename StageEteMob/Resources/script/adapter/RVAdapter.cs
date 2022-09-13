@@ -1,4 +1,5 @@
-﻿using Android.App;
+﻿using Android.Accounts;
+using Android.App;
 using Android.Content;
 using Android.Graphics;
 using Android.OS;
@@ -22,6 +23,7 @@ namespace StageEteMob.Resources.script
     /// </summary>
     public class RVAdapter : RecyclerView.Adapter
     {
+        /// <summary>listarticle is used when there's articles, 3 times: in search article, in article selection and summary</summary>
         List<Article> listArticle;
         List<Devis> listDevis;
         List<Client> listClient;
@@ -67,14 +69,15 @@ namespace StageEteMob.Resources.script
             this.listClient = listClient;
             this.ndc = ndc;
             GlobVars.listClient = listClient;
-            //if "next" in client selection got clicked
+            //if "next" in client selection screen got clicked
+            //this happens when we click the back arrow in article selection secreen
             if (GlobVars.devisClientDone && GlobVars.client != null)
             {
-                //go through the list of client we got from server
+                //go through the list of clients we got from server
                 for (int i = 0; i < listClient.Count; i++)
                 {
-                    //comparing objects AND INDEXOF didnt work
-                    if (listClient[i].Nom.Equals(GlobVars.client.Nom))
+                    //comparing the saved client's code with ones in listClient (cause INDEXOF didnt work somehow)
+                    if (listClient[i].Code.Equals(GlobVars.client.Code))
                     {
                         positionList.Add(i);
                         selected = true;
@@ -92,6 +95,7 @@ namespace StageEteMob.Resources.script
             this.listArticle = listArticle;
             this.nda = nda;
             GlobVars.listArticle = listArticle;
+            //maintain selected articles when going back from Summary
             if (GlobVars.devisArticleDone)
             {
                 for (int i = 0; i < GlobVars.selectListArticle.Count; i++)
@@ -101,6 +105,7 @@ namespace StageEteMob.Resources.script
                         ///TODO change .name to something unique like code or wtv
                         if (GlobVars.selectListArticle[i].Name.Equals(listArticle[j].Name))
                         {
+                            listArticle[j].Quantity = GlobVars.selectListArticle[i].Quantity;
                             positionList.Add(j);
                             selected = true;
                         }
@@ -118,19 +123,24 @@ namespace StageEteMob.Resources.script
             isSum = true;
             this.listArticle = listArticle;
             nds = sum;
+            //setting up the total amount
+            updateTotalAmoount();
         }
+        //devis search constructor
         public RVAdapter(List<Devis> listDevis)
         {
             isDevis = true;
             isNormalDevis = true;
             this.listDevis = listDevis;
         }
+        //client search constructor
         public RVAdapter(List<Client> listClient)
         {
             isNormalClient = true;
             isClient = true;
             this.listClient = listClient;
         }
+        //article search constructor
         public RVAdapter(List<Article> listArticle)
         {
             isNormalArticle = true;
@@ -144,12 +154,15 @@ namespace StageEteMob.Resources.script
             if (isDevis)
             {
                 var devis = listDevis[position];
-                rvHolder.topTV.Text = devis.code;
+                rvHolder.topTV.Text = "#" + devis.id;
+                rvHolder.bottomTV.Text = "Date: " + devis.Date;
             }
             if (isArticle)
             {
                 var article = listArticle[position];
                 rvHolder.topTV.Text = article.Name;
+                rvHolder.bottomTV.Text = "Category: " + article.Categorie;
+                rvHolder.QteTV.Text = "Price: " + article.Achat;
             }
             if (isClient)
             {
@@ -160,6 +173,7 @@ namespace StageEteMob.Resources.script
             {
                 var sum = listArticle[position];
                 rvHolder.topTV.Text = sum.Name;
+                rvHolder.bottomTV.Text = "Price: " + sum.Achat;
                 rvHolder.np.Value = sum.Quantity;
             }
             rvHolder.position = position;
@@ -168,43 +182,43 @@ namespace StageEteMob.Resources.script
             if (positionList.Contains(position))
             {
                 rvHolder.card.SetBackgroundResource(Resource.Drawable.roundEdgeSelect);
+                rvHolder.topTV.SetTextColor(Color.Rgb(255, 255, 255));
+                rvHolder.bottomTV.SetTextColor(Color.Rgb(255, 255, 255));
+
                 if (isArticle)
                 {
-                    rvHolder.QteTV.SetTextColor(Android.Graphics.Color.Rgb(34, 34, 34));
+                    rvHolder.QteTV.SetTextColor(Android.Graphics.Color.Rgb(245, 245, 245));
                     Console.WriteLine(positionList.Count + " POSLIST ");
 
-
-                    //if (rvHolder.np.Enabled)
-                    //{
-
                     rvHolder.np.Enabled = true;
-
-                    rvHolder.np.Value = GlobVars.selectListArticle[positionList.IndexOf(position)].Quantity;
-                    //Console.WriteLine(position + " 11111  " + position);
-                    //}
                 }
             }
-            //the the non selected items
+            //the the non selected items  
             else
             {
                 rvHolder.card.SetBackgroundResource(Resource.Drawable.roundEdge);
+                rvHolder.topTV.SetTextColor(Color.Rgb(34, 34, 34));
+                rvHolder.bottomTV.SetTextColor(Color.Rgb(34, 34, 34));
+                rvHolder.QteTV.SetTextColor(Color.Rgb(34, 34, 34));
                 if (isArticle)
                 {
-                    //if (!modifiedQteList.Contains(position))
-                    //{
-
-                    //    rvHolder.np.Enabled = false;
-                    //    Console.WriteLine(position + " 22222  " + position);
-                    //}
                     rvHolder.np.Enabled = false;
-                    rvHolder.QteTV.SetTextColor(Android.Graphics.Color.Rgb(152, 152, 152));
-                    //Console.WriteLine(position + " 22222  " + position);
                 }
             }
 
-
         }
 
+        void updateTotalAmoount()
+        {
+            decimal tot = 0;
+            foreach (Article article in GlobVars.selectListArticle)
+            {
+                tot = tot + article.Achat;
+            }
+            nds.totalCostTV.Text = "Total: " + tot.ToString();
+        }
+
+        ///OnCreateViewHolder
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
         {
             View itemView = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.listItem, parent, false);
@@ -214,33 +228,47 @@ namespace StageEteMob.Resources.script
             {
                 viewHolder.bin.Click += (sender, e) =>
                 {
+                    //reseting the quantity of the deleted article to default (1)
+                    listArticle[viewHolder.position].Quantity = 1;
+                    //deleting the article, this only effect theh summary screen, listarticle will get refillled when we go back to selection
                     listArticle.RemoveAt(viewHolder.position);
                     NotifyDataSetChanged();
+
+                    //updating the total cost
+                    updateTotalAmoount();
+
+                    if (listArticle.Count > 0)
+                        nds.confirmBtn.Enabled = true;
+                    else
+                        nds.confirmBtn.Enabled = false;
+
+                    ///QOE
+                    if (GlobVars.selectListArticle.Count > 1)
+                        nds.articleCountTV.Text = GlobVars.selectListArticle.Count.ToString() + "  Articles";
+                    else
+                        nds.articleCountTV.Text = GlobVars.selectListArticle.Count.ToString() + "  Article";
+                };
+
+            }
+            if (isClient)
+            {
+                viewHolder.bin.Click += (sender, e) =>
+                {
+                    Console.WriteLine("FFFFff");
+                    listClient.RemoveAt(viewHolder.position);
+                    ///TODO::: call struct from summary + deleteAPI here
                 };
             }
             //skip the click event on these lists
-            if (isNormalArticle || isNormalClient || isNormalDevis || isSum)
+            if (isNormalArticle || isNormalClient || isNormalDevis)
                 return viewHolder;
             viewHolder.ItemView.Click += (sender, e) =>
             {
+                if (isSum)
+                    return;
                 //clicking same item => deselect it 
                 if (positionList.Contains(viewHolder.position))
                 {
-
-                    ///need to rest the article quantity to 0 when deselected before it's position get removed from positionList
-                    if (isArticle)
-                    {
-                        //NumberPicker np = s as NumberPicker;
-                        for (int i = 0; i < GlobVars.selectListArticle.Count; i++)
-                        {
-                            //positionList contains an index of item location (int)
-                            //viewHolder.layoutPosition is the position on sight (int)
-                            if (positionList[i] == viewHolder.LayoutPosition)
-                            {
-                                GlobVars.selectListArticle[i].Quantity = 0;
-                            }
-                        }
-                    }
 
                     positionList.Remove(viewHolder.position);
                     NotifyDataSetChanged();
@@ -289,20 +317,18 @@ namespace StageEteMob.Resources.script
             };
 
             ///Handling quantity selection for articles
-            if (isArticle)
+            if (isSum)
+            {
                 viewHolder.np.ValueChanged += (s, e) =>
             {
                 NumberPicker np = s as NumberPicker;
                 for (int i = 0; i < GlobVars.selectListArticle.Count; i++)
                 {
-                    //positionList contains an index of item location (int)
-                    //viewHolder.layoutPosition is the position on sight (int)
-                    if (positionList[i] == viewHolder.LayoutPosition)
-                    {
+                    if (i == viewHolder.LayoutPosition)
                         GlobVars.selectListArticle[i].Quantity = np.Value;
-                    }
                 }
             };
+            }
             return viewHolder;
 
         }
@@ -356,24 +382,42 @@ namespace StageEteMob.Resources.script
             np.SelectionDividerHeight = 0;
 
 
-            //Display conditions
+            ///Display conditions
+
+            //isNormalClient for the clients in the search tab
+            //isClient for the clients in the devis creation tab
+
+
             if (rVAdapter.isClient && !rVAdapter.isNormalClient)
             {
                 rightLL.Visibility = ViewStates.Gone;
+                topTV.TextSize = 15f;
                 bottomTV.Visibility = ViewStates.Gone;
+                leftLL.LayoutParameters.Height = 90;
             }
-            if (rVAdapter.isClient && rVAdapter.isNormalClient)
+            if (rVAdapter.isNormalClient)
             {
+                topTV.TextSize = 15f;
                 np.Visibility = ViewStates.Gone;
                 QteTV.Visibility = ViewStates.Gone;
                 bottomTV.Visibility = ViewStates.Gone;
                 bin.LayoutParameters.Width = 40;
                 bin.LayoutParameters.Height = 70;
+                //Console.WriteLine("HEIGHT " + leftLL.LayoutParameters.Height);
+                leftLL.LayoutParameters.Height = 90;
+                bin.LayoutParameters.Width = 60;
+                bin.LayoutParameters.Height = 70;
             }
             if (rVAdapter.isArticle)
             {
                 bin.Visibility = ViewStates.Gone;
-                bottomTV.Visibility = ViewStates.Gone;
+                //bottomTV.Visibility = ViewStates.Gone;
+                np.Visibility = ViewStates.Gone;
+                leftLL.LayoutParameters.Height = 150;
+                rightLL.LayoutParameters.Height = 150;
+
+                topTV.TextSize = 13f;
+                //bottomTV.TextSize = 10f;
 
             }
             if (rVAdapter.isNormalArticle)
@@ -383,12 +427,21 @@ namespace StageEteMob.Resources.script
             if (rVAdapter.isNormalDevis)
             {
                 rightLL.Visibility = ViewStates.Gone;
-                bottomTV.Visibility = ViewStates.Gone;
+                leftLL.LayoutParameters.Height = 90;
+                topTV.TextSize = 15f;
+                bottomTV.TextSize = 13f;
+
+                leftLL.LayoutParameters.Height = 130;
+
             }
             if (rVAdapter.isSum)
             {
+                leftLL.LayoutParameters.Height = 210;
+                rightLL.LayoutParameters.Height = 210;
                 bin.LayoutParameters.Width = 60;
                 bin.LayoutParameters.Height = 70;
+                topTV.TextSize = 14f;
+                //bottomTV.TextSize = 14f;
             }
         }
 

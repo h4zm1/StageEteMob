@@ -17,6 +17,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Google.Android.Material.Tabs;
+using StageEteMob.Resources.script;
 
 namespace StageEteMob
 {
@@ -45,13 +46,14 @@ namespace StageEteMob
             AppCompatEditText telET = View.FindViewById<AppCompatEditText>(Resource.Id.telTF);
             AppCompatEditText paysET = View.FindViewById<AppCompatEditText>(Resource.Id.paysTF);
 
-            var data = new
-            {
-                Tel = telET.Text,
-                Nom = nomET.Text,
-                Pays = paysET.Text
-            };
-            var json = JsonConvert.SerializeObject(data);
+
+            Client client = new Client();
+
+            client.Tel = telET.Text;
+            client.Nom = nomET.Text;
+            client.Adresse = paysET.Text;
+
+            var json = JsonConvert.SerializeObject(client);
             Console.WriteLine("### serialized object output:: " + json);
 
             midSync(json);

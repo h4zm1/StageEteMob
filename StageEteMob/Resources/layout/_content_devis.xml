@@ -17,18 +17,72 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:id="@+id/linearLayout1">
-
-		<TextView
-			android:text="Devis from the last 30 days"
-			android:textAppearance="?android:attr/textAppearanceSmall"
+		<LinearLayout
+			android:orientation="horizontal"
+			android:minWidth="25px"
+			android:minHeight="25px"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:id="@+id/textView1"
-			android:layout_marginVertical="10px"
-			android:textColor="#ff222222"
-			android:layout_marginLeft="40px"
-			android:paddingTop="10px"
-			android:paddingBottom="10px" />
+			android:paddingLeft="40px"
+			android:id="@+id/linearLayout2">
+			<TextView
+				android:text="last "
+				android:textAppearance="?android:attr/textAppearanceMedium"
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent"
+				android:paddingTop="30px"
+				android:paddingRight="20px"
+				android:clickable="true"
+				android:id="@+id/textTV1"
+				android:textStyle="normal"
+				android:textColor="#ff222222" />
+
+			<TextView
+				android:text="30"
+				android:textAppearance="?android:attr/textAppearanceMedium"
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent"
+				android:paddingTop="30px"
+				android:paddingRight="20px"
+				android:clickable="true"
+				android:id="@+id/thirtyDays"
+				android:textStyle="bold"
+				android:textColor="#ff222222" />
+
+			<TextView
+				android:text="60"
+				android:textAppearance="?android:attr/textAppearanceMedium"
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent"
+				android:paddingTop="30px"
+				android:paddingRight="20px"
+				android:clickable="true"
+				android:textStyle="bold"
+				android:id="@+id/sixtydays"
+				android:textColor="#ff989898" />
+			<TextView
+				android:text="90"
+				android:textAppearance="?android:attr/textAppearanceMedium"
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent"
+				android:paddingTop="30px"
+				android:paddingRight="20px"
+				android:clickable="true"
+				android:textStyle="bold"
+				android:id="@+id/nintydays"
+				android:textColor="#ff989898" />
+			<TextView
+				android:text="days "
+				android:textAppearance="?android:attr/textAppearanceMedium"
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent"
+				android:paddingTop="30px"
+				android:paddingRight="20px"
+				android:clickable="true"
+				android:id="@+id/textTV2"
+				android:textStyle="normal"
+				android:textColor="#ff222222" />
+		</LinearLayout>
 
 		<androidx.recyclerview.widget.RecyclerView
 			android:minWidth="25px"
@@ -36,7 +90,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:id="@+id/devisRecyclerView"
-				android:background="@drawable/roundEdgeRV"/>
+			android:background="@drawable/roundEdgeRV"/>
 	</LinearLayout>
 
 </RelativeLayout>
