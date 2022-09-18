@@ -1,13 +1,4 @@
-﻿using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace StageEteMob.Resources.script
 {
@@ -23,6 +14,6 @@ namespace StageEteMob.Resources.script
         public static List<Client> listClient = new List<Client>();
         public static List<Article> listArticle = new List<Article>();
         public static List<Article> selectListArticle = new List<Article>();
-       
+
     }
 }

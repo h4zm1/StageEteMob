@@ -71,7 +71,6 @@ namespace StageEteMob
             GlobVars.devisNameDone = GlobVars.devisClientDone = GlobVars.devisArticleDone = false;
             GlobVars.devisName = "";
             GlobVars.client = null;
-            GlobVars.user = null;
             GlobVars.listArticle.Clear();
             GlobVars.listClient.Clear();
             GlobVars.selectListArticle.Clear();
@@ -95,7 +94,7 @@ namespace StageEteMob
             window.SetGravity(GravityFlags.Bottom);
 
             WindowManagerLayoutParams windowParams = window.Attributes;
-            windowParams.Y = 140;
+            windowParams.Y = 150;
             window.SetBackgroundDrawable(new ColorDrawable(Color.Transparent));
             window.Attributes = windowParams;
         }

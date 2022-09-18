@@ -142,6 +142,8 @@ namespace StageEteMob
             }
             else
                 Console.WriteLine("************** FAILED: " + result.ReasonPhrase);
+            Activity.SupportFragmentManager.BeginTransaction().Replace(Resource.Id.containerView, new SearchFrag()).Commit();
+
         }
     }
 }

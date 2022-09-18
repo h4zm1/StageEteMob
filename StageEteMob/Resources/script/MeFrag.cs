@@ -21,17 +21,12 @@ using Google.Android.Material.Tabs;
 using Android.Views.Animations;
 using Java.Lang;
 using Android.Animation;
+using Google.Android.Material.TextField;
 
 namespace StageEteMob
 {
     public class MeFrag : AndroidX.Fragment.App.Fragment
     {
-        struct incUser
-        {
-            public string login;
-            public string password;
-            public string code;
-        };
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -43,20 +38,28 @@ namespace StageEteMob
 
             var fragmentView = inflater.Inflate(Resource.Layout.content_me, container, false);
 
-            TextView jsonDisplay = fragmentView.FindViewById<TextView>(Resource.Id.tvJson);
-            //jsonDisplay.Text = GlobVars.userJson;
+            TextView letterTV = fragmentView.FindViewById<TextView>(Resource.Id.letterTV);
+            TextView nameTV = fragmentView.FindViewById<TextView>(Resource.Id.nameTV);
+            TextView idTV = fragmentView.FindViewById<TextView>(Resource.Id.idTV);
+            TextView iduserTV = fragmentView.FindViewById<TextView>(Resource.Id.iduserTV);
+
+            letterTV.Text = GlobVars.user.login[0].ToString().ToUpper();
+            nameTV.Text = "Name: "+GlobVars.user.login;
+            idTV.Text = "Id: "+GlobVars.user.id;
+            iduserTV.Text = "UId: " + GlobVars.user.IdUtilisateur;
+            //passET.Text = Glo
 
             MaterialButton btn = fragmentView.FindViewById<MaterialButton>(Resource.Id.signoutBtn);
             btn.Click += initEvent;
 
             return fragmentView;
         }
-    private void initEvent(object sender, EventArgs eventArgs)
-    {
+        private void initEvent(object sender, EventArgs eventArgs)
+        {
 
-        //go back to sign in fragment
-        Activity.SupportFragmentManager.BeginTransaction().Replace(Resource.Id.containerView, new SignInFrag()).Commit();
+            //go back to sign in fragment
+            Activity.SupportFragmentManager.BeginTransaction().Replace(Resource.Id.containerView, new SignInFrag()).Commit();
+        }
+
     }
-       
-}
 }

@@ -88,7 +88,7 @@ namespace StageEteMob
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this.Context);
             rv.SetLayoutManager(mLayoutManager);
 
-            RVAdapter adapter = new RVAdapter(listOfDevis);
+            RVAdapter adapter = new RVAdapter(listOfDevis, this);
             rv.SetAdapter(adapter);
         }
         private async void midSync(View vf)
@@ -109,7 +109,7 @@ namespace StageEteMob
                 }
                 else
                     //ip = pc(host) ip address, port = extension remote url port 
-                    uri = "https://192.168.1.2:45461/api/Devis/GetTimedDevis";
+                    uri = "https://192.168.1.2:45461/api/Devis/Post";
 
                 //bypassing SSLHandshakeException
                 HttpClientHandler clientHandler = new HttpClientHandler
@@ -156,6 +156,34 @@ namespace StageEteMob
                 Console.WriteLine("************** Error Message: " + ex.Message);
                 Console.WriteLine("************** Stack Trace: " + ex.StackTrace);
             }
+        }
+        public async Task DeletePI(string delJson)
+        {
+            string uri = "";
+            //only for testing with current emulator
+            if (Build.Hardware.Contains("ranchu"))
+                uri = "https://10.0.2.2:44317/api/Devis/Delete";
+            else
+                uri = "https://192.168.1.2:45456/api/Devis/Delete";
+
+            //bypassing SSLHandshakeException
+            HttpClientHandler clientHandler = new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; }
+            };
+
+            var client = new HttpClient(clientHandler);
+
+            var result = await client.DeleteAsync(uri + "?delJson=" + delJson);
+            //this how to retrieve the res-querry string from the delete call
+            var fromDelete = await result.Content.ReadAsStringAsync();
+            Console.WriteLine(fromDelete);
+            if (result.IsSuccessStatusCode)
+            {
+                var tokenJson = await result.Content.ReadAsStringAsync();
+            }
+            else
+                Console.WriteLine("************** FAILED: " + result.ReasonPhrase);
         }
 
 

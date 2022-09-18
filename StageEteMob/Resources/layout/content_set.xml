@@ -10,6 +10,7 @@
 	android:id="@+id/relativeLayInc"
 	android:minWidth="25px"
 	android:minHeight="25px">
+
 	<LinearLayout
 		android:orientation="vertical"
 		android:minWidth="25px"
@@ -19,37 +20,93 @@
 		android:paddingLeft="20px"
 		android:paddingRight="20px"
 		android:id="@+id/linearLayout1">
-			<TextView
-			android:text="New Client"
+		<TextView
+			android:text="Create a client"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:id="@+id/textView1"
-			android:textSize="27sp"
+			android:textSize="25sp"
 			android:textStyle="normal"
 			android:paddingTop="30px"
-			android:paddingBottom="30px"
-			android:textColor="#ff282828" />
+			android:paddingBottom="50px"
+			android:textColor="#ff222222"
+			android:textAlignment="center" />
+		<TextView
+			android:text="Client Name"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:textColor="#ff222222"
+			android:id="@+id/textView2" />
+
 		<EditText
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:id="@+id/nomTF"
-			android:hint="Nom" />
+			android:hint="ex: Ali"
+			android:theme="@style/MyEditTextTheme"
+			android:textColorHint="#ffacacac"
+			android:layout_marginBottom="40px" />
+		<TextView
+			android:text="Client Mail"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:textColor="#ff222222"
+			android:id="@+id/textView6" />
+
+		<EditText
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/mailTF"
+			android:hint="ex: Ali@gmail.com"
+			android:theme="@style/MyEditTextTheme"
+			android:textColorHint="#ffacacac"
+			android:layout_marginBottom="40px" />
+		<TextView
+			android:text="Client Phone number"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:textColor="#ff222222"
+			android:id="@+id/textView3" />
 		<EditText
 			android:layout_width="match_parent"
 			android:layout_height="54.5dp"
 			android:id="@+id/telTF"
-			android:hint="Tel" />
+			android:hint="ex: 27215300"
+			android:theme="@style/MyEditTextTheme"
+			android:textColorHint="#ffacacac"
+			android:layout_marginBottom="40px"/>
+		<TextView
+			android:text="Client Location"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:textColor="#ff222222"
+			android:id="@+id/textView4" />
 		<EditText
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:id="@+id/paysTF"
-			android:hint="Pays" />
-		<Button
-			android:text="Add"
+			android:hint="ex: Tunisie"
+			android:theme="@style/MyEditTextTheme"
+			android:textColorHint="#ffacacac"
+			android:layout_marginBottom="50px"/>
+
+		<com.google.android.material.button.MaterialButton
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
+			android:text="ADD"
+			android:layout_height="50.0dp"
 			android:textAllCaps="false"
-			android:id="@+id/button1"/>
+			android:id="@+id/materialButton1" />
+
+
 	</LinearLayout>
+
+
+
+
+
 
 </RelativeLayout>

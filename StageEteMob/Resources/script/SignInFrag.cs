@@ -26,8 +26,9 @@ namespace StageEteMob
     public class SignInFrag : AndroidX.Fragment.App.Fragment
     {
         TextView feedbackOut;
-        Timer timer = new Timer(5000);
+        Timer timer = new Timer(1000);
         MaterialButton signinbtn;
+        AppCompatEditText login, password;
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -42,6 +43,9 @@ namespace StageEteMob
             LinearLayout tab = Activity.FindViewById<LinearLayout>(Resource.Id.fakeTabLayout);
             View shadow = Activity.FindViewById<View>(Resource.Id.shadow);
 
+            login = fragmentView.FindViewById<AppCompatEditText>(Resource.Id.login);
+            password = fragmentView.FindViewById<AppCompatEditText>(Resource.Id.password);
+
 
             //don't want to see the tab navigation at sign in
             tab.Visibility = ViewStates.Invisible;
@@ -52,20 +56,15 @@ namespace StageEteMob
 
             feedbackOut = fragmentView.FindViewById<TextView>(Resource.Id.feedbackTV);
 
-
+            ///COMMENT THE 3 LINES BELLOW
+            login.Text = TempAuth.logpwd;
+            password.Text = TempAuth.logpwd;
+            feedbackOut.Text = "debug auto login";
 
             return fragmentView;
         }
         private void initEvent(object sender, EventArgs eventArgs)
         {
-            AppCompatEditText login = View.FindViewById<AppCompatEditText>(Resource.Id.login);
-            AppCompatEditText password = View.FindViewById<AppCompatEditText>(Resource.Id.password);
-
-            //temp auth assignment, just so I don't have to write it evertime
-            login.Text = TempAuth.logpwd;
-            password.Text = TempAuth.logpwd;
-
-
             var auth = new
             {
                 login = login.Text,
@@ -115,12 +114,9 @@ namespace StageEteMob
             {
                 Console.WriteLine("************** FAILED ");
 
-                //feedbackOut.Text = "User not found";
                 setupSnackbar();
 
-                timer.Elapsed += OnTimeOut;
-                timer.AutoReset = true;
-                timer.Enabled = true;
+
                 return;
             }
 

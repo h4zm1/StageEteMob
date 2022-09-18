@@ -9,6 +9,7 @@ using Android.Widget;
 using AndroidX.CardView.Widget;
 using AndroidX.RecyclerView.Widget;
 using Java.Lang;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,11 +43,18 @@ namespace StageEteMob.Resources.script
         _NewDevisClient ndc;
         _NewDevisArticle nda;
         _NewDevisSummary nds;
+        _ClientFrag cf;
+        _DevisFrag df;
         ///<summary> where the current selected item(s) are held
         ///Ex: if select 5th item in list, we save the number 5 to positionList
         ///And now we can easily retrieve the object with IndexOf (but somehow IndexOf don't want to work)
         /// </summary>
         List<int> positionList = new List<int>();
+        struct OutDelVal
+        {
+            public int utilisateurId;
+            public int code;// this will hold the id when working with devis
+        }
         public override int ItemCount
         {
             get
@@ -124,21 +132,23 @@ namespace StageEteMob.Resources.script
             this.listArticle = listArticle;
             nds = sum;
             //setting up the total amount
-            updateTotalAmoount();
+            updateTotalAmount();
         }
         //devis search constructor
-        public RVAdapter(List<Devis> listDevis)
+        public RVAdapter(List<Devis> listDevis, _DevisFrag df)
         {
             isDevis = true;
             isNormalDevis = true;
             this.listDevis = listDevis;
+            this.df = df;
         }
         //client search constructor
-        public RVAdapter(List<Client> listClient)
+        public RVAdapter(List<Client> listClient, _ClientFrag cf)
         {
             isNormalClient = true;
             isClient = true;
             this.listClient = listClient;
+            this.cf = cf;
         }
         //article search constructor
         public RVAdapter(List<Article> listArticle)
@@ -155,14 +165,15 @@ namespace StageEteMob.Resources.script
             {
                 var devis = listDevis[position];
                 rvHolder.topTV.Text = "#" + devis.id;
-                rvHolder.bottomTV.Text = "Date: " + devis.Date;
+                rvHolder.bottomTV.Text = "Created in: " + devis.Date;
+                rvHolder.QteTV.Text = "Total: " + devis.Total.ToString();
             }
             if (isArticle)
             {
                 var article = listArticle[position];
                 rvHolder.topTV.Text = article.Name;
                 rvHolder.bottomTV.Text = "Category: " + article.Categorie;
-                rvHolder.QteTV.Text = "Price: " + article.Achat;
+                rvHolder.QteTV.Text = "Price: " + article.Vente;
             }
             if (isClient)
             {
@@ -208,12 +219,16 @@ namespace StageEteMob.Resources.script
 
         }
 
-        void updateTotalAmoount()
+        void updateTotalAmount()
         {
             decimal tot = 0;
             foreach (Article article in GlobVars.selectListArticle)
             {
-                tot = tot + article.Achat;
+                for (int i = 0; i < article.Quantity; i++)
+                {
+
+                    tot = tot + article.Vente;
+                }
             }
             nds.totalCostTV.Text = "Total: " + tot.ToString();
         }
@@ -235,7 +250,7 @@ namespace StageEteMob.Resources.script
                     NotifyDataSetChanged();
 
                     //updating the total cost
-                    updateTotalAmoount();
+                    updateTotalAmount();
 
                     if (listArticle.Count > 0)
                         nds.confirmBtn.Enabled = true;
@@ -250,14 +265,47 @@ namespace StageEteMob.Resources.script
                 };
 
             }
+
+            // deleting clients
             if (isClient)
             {
                 viewHolder.bin.Click += (sender, e) =>
                 {
-                    Console.WriteLine("FFFFff");
+                    OutDelVal outDelVal = new OutDelVal();
+                    outDelVal.code = listClient[viewHolder.LayoutPosition].Code;
+                    outDelVal.utilisateurId = GlobVars.user.IdUtilisateur;
+
+                    var json = JsonConvert.SerializeObject(outDelVal);
+                    midSync(json);
                     listClient.RemoveAt(viewHolder.position);
-                    ///TODO::: call struct from summary + deleteAPI here
+                    NotifyDataSetChanged();
+                    cf.clientCountTV.Text = "Number of Clients: " + listClient.Count.ToString();
+
                 };
+            }
+            // deleting devis
+            if (isDevis)
+            {
+                viewHolder.bin.Click += (sender, e) =>
+                {
+                    OutDelVal outDelVal = new OutDelVal();
+                    outDelVal.code = listDevis[viewHolder.LayoutPosition].id;
+                    outDelVal.utilisateurId = GlobVars.user.IdUtilisateur;
+
+                    var json = JsonConvert.SerializeObject(outDelVal);
+                    midSync(json);
+                    listDevis.RemoveAt(viewHolder.position);
+                    NotifyDataSetChanged();
+
+                };
+            }
+            async void midSync(string delJson)
+            {
+                if (isNormalClient)
+                    await cf.DeletePI(delJson);
+                else
+                    await df.DeletePI(delJson);
+
             }
             //skip the click event on these lists
             if (isNormalArticle || isNormalClient || isNormalDevis)
@@ -327,6 +375,7 @@ namespace StageEteMob.Resources.script
                     if (i == viewHolder.LayoutPosition)
                         GlobVars.selectListArticle[i].Quantity = np.Value;
                 }
+                updateTotalAmount();
             };
             }
             return viewHolder;
@@ -375,7 +424,7 @@ namespace StageEteMob.Resources.script
             card.Elevation = 0f;
             this.rVAdapter = rVAdapter;
             np = itemview.FindViewById<NumberPicker>(Resource.Id.numberPicker1);
-            np.MinValue = 00;
+            np.MinValue = 1;
             np.MaxValue = 100;
             np.WrapSelectorWheel = true;
             np.Value = 0;
@@ -401,8 +450,8 @@ namespace StageEteMob.Resources.script
                 np.Visibility = ViewStates.Gone;
                 QteTV.Visibility = ViewStates.Gone;
                 bottomTV.Visibility = ViewStates.Gone;
-                bin.LayoutParameters.Width = 40;
-                bin.LayoutParameters.Height = 70;
+                //bin.LayoutParameters.Width = 40;
+                //bin.LayoutParameters.Height = 70;
                 //Console.WriteLine("HEIGHT " + leftLL.LayoutParameters.Height);
                 leftLL.LayoutParameters.Height = 90;
                 bin.LayoutParameters.Width = 60;
@@ -426,9 +475,14 @@ namespace StageEteMob.Resources.script
             }
             if (rVAdapter.isNormalDevis)
             {
-                rightLL.Visibility = ViewStates.Gone;
+                //rightLL.Visibility = ViewStates.Gone;
+
+                np.Visibility = ViewStates.Gone;
+                bin.LayoutParameters.Width = 60;
+                bin.LayoutParameters.Height = 70;
                 leftLL.LayoutParameters.Height = 90;
                 topTV.TextSize = 15f;
+                topTV.SetTypeface(topTV.Typeface, TypefaceStyle.Bold);
                 bottomTV.TextSize = 13f;
 
                 leftLL.LayoutParameters.Height = 130;

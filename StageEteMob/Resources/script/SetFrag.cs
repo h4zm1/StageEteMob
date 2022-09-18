@@ -18,11 +18,15 @@ using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Google.Android.Material.Tabs;
 using StageEteMob.Resources.script;
+using Android.Content.Res;
+using Android.Graphics;
+using static Android.Views.View;
 
 namespace StageEteMob
 {
     public class SetFrag : AndroidX.Fragment.App.Fragment
     {
+        AppCompatEditText nomET, telET, paysET, mailTF;
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -35,30 +39,33 @@ namespace StageEteMob
 
             var fragmentView = inflater.Inflate(Resource.Layout.content_set, container, false);
 
-            MaterialButton btn = fragmentView.FindViewById<MaterialButton>(Resource.Id.button1);
+            MaterialButton btn = fragmentView.FindViewById<MaterialButton>(Resource.Id.materialButton1);
             btn.Click += initEvent;
 
             return fragmentView;
         }
         private void initEvent(object sender, EventArgs eventArgs)
         {
-            AppCompatEditText nomET = View.FindViewById<AppCompatEditText>(Resource.Id.nomTF);
-            AppCompatEditText telET = View.FindViewById<AppCompatEditText>(Resource.Id.telTF);
-            AppCompatEditText paysET = View.FindViewById<AppCompatEditText>(Resource.Id.paysTF);
-
+            nomET = View.FindViewById<AppCompatEditText>(Resource.Id.nomTF);
+            telET = View.FindViewById<AppCompatEditText>(Resource.Id.telTF);
+            paysET = View.FindViewById<AppCompatEditText>(Resource.Id.paysTF);
+            mailTF = View.FindViewById<AppCompatEditText>(Resource.Id.mailTF);
 
             Client client = new Client();
+
 
             client.Tel = telET.Text;
             client.Nom = nomET.Text;
             client.Adresse = paysET.Text;
+            client.Mail = mailTF.Text;
+            client.Mf = "";
 
             var json = JsonConvert.SerializeObject(client);
+
             Console.WriteLine("### serialized object output:: " + json);
 
             midSync(json);
         }
-
         private async void midSync(string val)
         {
             await SetAPI(val);
@@ -84,7 +91,7 @@ namespace StageEteMob
             var client = new HttpClient(clientHandler);
             var httpContent = new StringContent("");
 
-            var result = await client.PostAsync(uri + "?fromMob=" + valueToSend, httpContent);
+            var result = await client.PostAsync(uri + "?mobClient=" + valueToSend, httpContent);
             //this how to retrieve the returned string from the POST call
             var fromPost = await result.Content.ReadAsStringAsync();
             Console.WriteLine(fromPost);

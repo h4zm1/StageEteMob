@@ -22,12 +22,8 @@ namespace StageEteMob
     public class _ClientFrag : AndroidX.Fragment.App.Fragment
     {
         SearchFrag parent;
-        TextView clientCountTV;
-        public struct OutDelVal
-        {
-            public int utilisateurId;
-            public int code;
-        }
+        public TextView clientCountTV;
+       
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -54,7 +50,7 @@ namespace StageEteMob
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this.Context);
             rv.SetLayoutManager(mLayoutManager);
 
-            RVAdapter adapter = new RVAdapter(listOfClients);
+            RVAdapter adapter = new RVAdapter(listOfClients, this);
             rv.SetAdapter(adapter);
         }
         private async void midSync(View vf)
@@ -62,7 +58,7 @@ namespace StageEteMob
             await CallAPI(vf);
 
         }
-        private async Task DeletePI(string delJson)
+        public async Task DeletePI(string delJson)
         {
             string uri = "";
             //only for testing with current emulator

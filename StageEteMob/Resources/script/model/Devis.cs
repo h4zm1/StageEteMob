@@ -13,7 +13,7 @@ namespace StageEteMob.Resources.script
 {
     public class Devis
     {
-        public string id { get; set; }
+        public int id { get; set; }
         public int clientCode { get; set; }
         public string nom { get; set; }
         public string userCode { get; set; }
@@ -21,6 +21,6 @@ namespace StageEteMob.Resources.script
         public string code { get; set; }
         public List<Article> listArticle = new List<Article>();
         public int IdUtilisateur { get; set; }
-
+        public decimal Total { get; set; }
     }
 }

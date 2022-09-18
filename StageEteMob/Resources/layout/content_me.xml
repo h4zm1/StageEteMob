@@ -21,26 +21,61 @@
 		android:paddingLeft="20px"
 		android:paddingRight="20px">
 		<TextView
-			android:text="..."
+			android:text="X"
 			android:textAppearance="?android:attr/textAppearanceMedium"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:paddingTop="30px"
-			android:id="@+id/tvJson" />
+			android:id="@+id/letterTV"
+			android:textColor="#ff222222"
+			android:textStyle="bold"
+			android:textSize="100px"
+			android:textAlignment="center" />
+
+
+
+		<TextView
+			android:text="name"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:textColor="#ff222222"
+			android:id="@+id/nameTV"
+			android:layout_marginTop="50px" />
+
+		<com.google.android.material.divider.MaterialDivider
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/materialDivider1"
+			android:layout_marginVertical="40px" />
+		<TextView
+			android:text="id"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:textColor="#ff222222"
+			android:id="@+id/idTV" />
+
+		<com.google.android.material.divider.MaterialDivider
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/materialDivider1"
+			android:layout_marginVertical="40px" />
+		<TextView
+			android:text="iduser"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:textColor="#ff222222"
+			android:id="@+id/iduserTV" />
 		<Button
 			android:text="Sign Out"
 			android:layout_width="match_parent"
 			android:layout_height="59.0dp"
 			android:id="@+id/signoutBtn"
+			android:layout_alignParentBottom="true"
+			android:layout_marginTop="100px"
 			android:textAllCaps="false" />
-		<RelativeLayout
-			android:minWidth="25px"
-			android:minHeight="25px"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:id="@+id/relativeLayout1">
-
-		</RelativeLayout>
 
 	</LinearLayout>
 </RelativeLayout>
