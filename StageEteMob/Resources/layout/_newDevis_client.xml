@@ -18,23 +18,24 @@
 		android:id="@+id/relativeLayout1">
 
 		<ImageButton
-			android:src="@drawable/backarrow"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_alignParentTop="true"
-			android:layout_alignParentLeft="true"
+			android:src="@drawable/searchIcon"
+			android:layout_width="30dp"
+			android:layout_height="30dp"
+			android:layout_alignParentTop="false"
+			android:layout_alignParentRight="true"
 			android:scaleType="fitCenter"
-			android:id="@+id/goback"
+			android:id="@+id/searchIB"
 			android:pointerIcon="none"
-			android:layout_marginLeft="30px"
-			android:layout_marginTop="15px"
-			android:background="#ffffffff" />
+			android:layout_marginRight="160px"
+			android:layout_marginTop="12px"
+			android:background="#ffffffff"
+			android:layout_centerInParent="true" />
 		<TextView
 			android:text="Select a client"
 			android:textAppearance="?android:attr/textAppearanceMedium"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:id="@+id/textView1"
+			android:id="@+id/titleTV"
 			android:textAlignment="center"
 			android:textColor="#ff222222"
 			android:layout_marginTop="20px"
@@ -42,16 +43,32 @@
 			android:layout_alignParentRight="true" 
 			/>
 
+		<EditText
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/searchET"
+			android:hint="Search Client"
+			android:theme="@style/MyEditTextTheme"
+			android:textColorHint="#ffacacac"
+			app:backgroundTint="#00ffffff"
+			android:textAlignment="center"
+			android:layout_marginHorizontal="90dp"
+			android:backgroundTint="#ffff0505"
+			android:singleLine="true"
+			android:inputType="textVisiblePassword|textNoSuggestions"
+			android:visibility="invisible"
+			android:focusableInTouchMode="true"
+			android:focusable="auto" />
 		<TextView
 			android:text="Next"
 			android:textAppearance="?android:attr/textAppearanceMedium"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:id="@+id/nexttv"
-			android:layout_alignParentTop="true"
 			android:layout_alignParentRight="true"
 			android:layout_marginRight="30px"
 			android:layout_marginTop="20px"
+			android:layout_centerInParent="true"
 			android:textColor="#ff989898"/>
 	</RelativeLayout>
 
@@ -87,7 +104,7 @@
 			android:paddingLeft="5px"
 			android:paddingRight="5px"
 			android:id="@+id/clientrv"
-				android:background="@drawable/roundEdgeRV" />
+			android:background="@drawable/roundEdgeRV" />
 	</LinearLayout>
 
 </RelativeLayout>

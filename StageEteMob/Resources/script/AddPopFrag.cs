@@ -60,7 +60,7 @@ namespace StageEteMob
             //reseting globs
             resetGlobs();
 
-            Activity.SupportFragmentManager.BeginTransaction().Replace(Resource.Id.containerView, new _NewDevisName()).Commit();
+            Activity.SupportFragmentManager.BeginTransaction().Replace(Resource.Id.containerView, new _NewDevisClient()).Commit();
             rotate_AntiClockwise(addImg);
             //deselect all other icons in fake tabbar 
             parent.resetFakeTabBar();

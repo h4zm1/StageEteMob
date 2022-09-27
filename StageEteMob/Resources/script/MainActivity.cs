@@ -18,6 +18,7 @@ using Google.Android.Material.Tabs;
 using Android.Widget;
 using Android.Animation;
 using Android.Graphics;
+using StageEteMob.Resources.script;
 
 namespace StageEteMob
 {
@@ -39,6 +40,15 @@ namespace StageEteMob
 
             //set signinfrag as starting frag
             SupportFragmentManager.BeginTransaction().Add(Resource.Id.containerView, new SignInFrag()).Commit();
+
+            //User u = new User();
+            //u.login = "a";
+            //u.password = "b";
+            //u.IdUtilisateur = 1;
+            //u.id = 2;
+            //GlobVars.user = u;
+            //SupportFragmentManager.BeginTransaction().Add(Resource.Id.containerView, new MeFrag()).Commit();
+
             addImg = FindViewById<ImageView>(Resource.Id.imageView161);
             profileImg = FindViewById<ImageView>(Resource.Id.imageView171);
             cdImg = FindViewById<ImageView>(Resource.Id.imageView151);

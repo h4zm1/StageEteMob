@@ -79,7 +79,7 @@ namespace StageEteMob.Resources.script
             GlobVars.listClient = listClient;
             //if "next" in client selection screen got clicked
             //this happens when we click the back arrow in article selection secreen
-            if (GlobVars.devisClientDone && GlobVars.client != null)
+            if (GlobVars.client != null)
             {
                 //go through the list of clients we got from server
                 for (int i = 0; i < listClient.Count; i++)
@@ -89,8 +89,9 @@ namespace StageEteMob.Resources.script
                     {
                         positionList.Add(i);
                         selected = true;
-                        if (isClient)
-                            ndc.toggleNext();
+                        // the ugly things we do for DRY
+                        ndc.nextState = false;
+                        ndc.toggleNext();
                     }
                 }
             }
@@ -104,7 +105,8 @@ namespace StageEteMob.Resources.script
             this.nda = nda;
             GlobVars.listArticle = listArticle;
             //maintain selected articles when going back from Summary
-            if (GlobVars.devisArticleDone)
+            //if (GlobVars.devisArticleDone)
+            if (GlobVars.selectListArticle.Count > 0)
             {
                 for (int i = 0; i < GlobVars.selectListArticle.Count; i++)
                 {
@@ -121,7 +123,10 @@ namespace StageEteMob.Resources.script
                 }
                 //this to make sure that toggle will only trigger once if there's more than one selection 
                 if (selected && isArticle)
+                {
+                    nda.nextState = false;
                     nda.toggleNext();
+                }
             }
 
         }
@@ -314,7 +319,7 @@ namespace StageEteMob.Resources.script
             {
                 if (isSum)
                     return;
-                //clicking same item => deselect it 
+                // clicking same item => deselect it 
                 if (positionList.Contains(viewHolder.position))
                 {
 
@@ -326,6 +331,7 @@ namespace StageEteMob.Resources.script
                         if (isClient)
                         {
                             ndc.toggleNext();
+                            GlobVars.client = null;
                             selected = false;
                         }
                         if (isArticle)
