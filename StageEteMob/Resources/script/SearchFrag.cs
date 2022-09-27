@@ -46,9 +46,13 @@ namespace StageEteMob
             devisTV.Click += devisEvent;
             articleTv.Click += articleEvent;
             clientTv.Click += clientEvent;
-            //set _DevisFrag as starting frag
-            startAndPass(new _DevisFrag(), this);
 
+            if (GlobVars.comingFromSetFrag)
+                clientEvent(this, null);
+            else
+                //set _DevisFrag as starting frag
+                startAndPass(new _DevisFrag(), this);
+            GlobVars.comingFromSetFrag = false;
             //ImageView img = fragmentView.FindViewById<ImageView>(Resource.Id.bin);
             //AnimatedVectorDrawable drawable = (AnimatedVectorDrawable)Resource.Drawable.ripple2;
             //img.SetImageDrawable(drawable);
@@ -93,7 +97,7 @@ namespace StageEteMob
             clientTv.SetTextColor(Android.Graphics.Color.Rgb(152, 152, 152));
             startAndPass(new _ArticleFrag(), this);
         }
-        void clientEvent(object sender, EventArgs eventArgs)
+         void clientEvent(object sender, EventArgs eventArgs)
         {
             clientTv.SetTextColor(Android.Graphics.Color.Rgb(34, 34, 34));
             devisTV.SetTextColor(Android.Graphics.Color.Rgb(152, 152, 152));
@@ -104,6 +108,5 @@ namespace StageEteMob
         {
             Console.WriteLine("FROM EARTH TO MARS");
         }
-
     }
 }

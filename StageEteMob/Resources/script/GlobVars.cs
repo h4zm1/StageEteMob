@@ -4,6 +4,7 @@ namespace StageEteMob.Resources.script
 {
     internal static class GlobVars
     {
+        public static bool comingFromSetFrag = false;
         public static bool devisNameDone = false;
         public static bool devisClientDone = false;
         public static bool devisArticleDone = false;

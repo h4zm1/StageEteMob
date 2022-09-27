@@ -21,6 +21,7 @@ using StageEteMob.Resources.script;
 using Android.Content.Res;
 using Android.Graphics;
 using static Android.Views.View;
+using System.Net.Mail;
 
 namespace StageEteMob
 {
@@ -50,6 +51,75 @@ namespace StageEteMob
             telET = View.FindViewById<AppCompatEditText>(Resource.Id.telTF);
             paysET = View.FindViewById<AppCompatEditText>(Resource.Id.paysTF);
             mailTF = View.FindViewById<AppCompatEditText>(Resource.Id.mailTF);
+            TextView clientNameTV = View.FindViewById<TextView>(Resource.Id.clientNameTV);
+            TextView clientMailTV = View.FindViewById<TextView>(Resource.Id.clientMailTV);
+            TextView clientPNTV = View.FindViewById<TextView>(Resource.Id.clientPNTV);
+            TextView clientLocTV = View.FindViewById<TextView>(Resource.Id.clientLocTV);
+
+            bool allGood = false;
+
+            if (nomET.Text.Length > 0)
+            {
+                clientNameTV.SetTextColor(Color.Rgb(22, 22, 22));
+                allGood = true;
+            }
+            else
+            {
+                clientNameTV.SetTextColor(Color.Red);
+                allGood = false;
+            }
+            bool pointExist = false;
+            try
+            {
+                var mail = new MailAddress(mailTF.Text);
+
+                pointExist = mail.Host.Contains(".");
+            }
+            catch
+            {
+                pointExist = false;
+            }
+            if (pointExist)
+            {
+                clientMailTV.SetTextColor(Color.Rgb(22, 22, 22));
+                allGood = true;
+
+            }
+            else
+            {
+                clientMailTV.SetTextColor(Color.Red);
+                allGood = false;
+
+            }
+            if (telET.Text.Length >= 8)
+            {
+                clientPNTV.SetTextColor(Color.Rgb(22, 22, 22));
+                allGood = true;
+
+            }
+            else
+            {
+                clientPNTV.SetTextColor(Color.Red);
+                allGood = false;
+
+            }
+            if (paysET.Text.Length > 0)
+            {
+                clientLocTV.SetTextColor(Color.Rgb(22, 22, 22));
+                allGood = true;
+
+            }
+            else
+            {
+                clientLocTV.SetTextColor(Color.Red);
+                allGood = false;
+
+            }
+
+
+            if (!allGood)
+                return;
+
 
             Client client = new Client();
 
@@ -101,6 +171,11 @@ namespace StageEteMob
             }
             else
                 Console.WriteLine("************** FAILED: " + result.ReasonPhrase);
+
+
+            GlobVars.comingFromSetFrag = true;
+            Activity.SupportFragmentManager.BeginTransaction().Replace(Resource.Id.containerView, new SearchFrag()).Commit();
+
         }
     }
 }
